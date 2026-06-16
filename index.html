@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CoE Function Point Calculator</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F7F5;
+  --surface:#FFFFFF;
+  --surface2:#F2F2EF;
+  --border:#E4E4DF;
+  --border2:#D0D0CA;
+  --text:#1A1A18;
+  --text2:#5A5A56;
+  --text3:#8A8A85;
+  --accent:#4A3FD4;
+  --accent-bg:#EEEDFE;
+  --accent-text:#3C3489;
+  --green:#0F6E56;
+  --green-bg:#E1F5EE;
+  --amber:#854F0B;
+  --amber-bg:#FAEEDA;
+  --red:#A32D2D;
+  --red-bg:#FCEBEB;
+  --blue:#185FA5;
+  --blue-bg:#E6F1FB;
+  --radius:8px;
+  --radius-lg:12px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* Layout */
+.app{max-width:960px;margin:0 auto;padding:24px 16px 60px}
+.header{margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.header h1{font-size:22px;font-weight:600;color:var(--text);margin-bottom:4px}
+.header p{color:var(--text2);font-size:13px}
+.tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--surface2);padding:4px;border-radius:var(--radius-lg);width:fit-content}
+.tab{padding:7px 16px;border-radius:8px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit;transition:all 0.15s}
+.tab.active{background:var(--surface);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.tab:hover:not(.active){color:var(--text)}
+.panel{display:none}
+.panel.active{display:block}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
+.card-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px}
+
+/* Form */
+label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500}
+textarea,input,select{font-family:inherit;font-size:14px;width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);appearance:none;transition:border 0.15s}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+textarea{resize:vertical;min-height:72px}
+input[readonly]{background:var(--surface2);color:var(--text2)}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.field{margin-bottom:14px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;font-family:inherit;transition:all 0.15s;font-weight:500}
+.btn:hover{background:var(--surface2);border-color:var(--border2)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:#3832B0;border-color:#3832B0}
+.btn-full{width:100%;justify-content:center}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* Result */
+.result-hero{background:var(--accent-bg);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.result-fp{font-size:40px;font-weight:700;color:var(--accent)}
+.result-fp-label{font-size:12px;color:var(--accent-text);margin-top:2px}
+.formula-box{font-size:13px;color:var(--accent-text);background:#fff;border-radius:var(--radius);padding:8px 14px;font-family:'SF Mono','Fira Code',monospace;margin-top:12px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric{background:var(--surface2);border-radius:var(--radius);padding:12px 14px}
+.metric-val{font-size:18px;font-weight:600;color:var(--text)}
+.metric-lbl{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* Badge */
+.badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.badge-EI{background:var(--blue-bg);color:var(--blue)}
+.badge-EO{background:var(--accent-bg);color:var(--accent-text)}
+.badge-EQ{background:var(--green-bg);color:var(--green)}
+.badge-ILF{background:var(--amber-bg);color:var(--amber)}
+.badge-EIF{background:#FAECE7;color:#712B13}
+.badge-TASK{background:var(--surface2);color:var(--text2)}
+
+/* AI box */
+.ai-box{background:var(--surface2);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--text2);border-left:3px solid var(--accent)}
+.ai-box b{color:var(--text)}
+.tip-box{background:var(--amber-bg);border-radius:var(--radius);padding:10px 14px;font-size:12px;color:var(--amber);margin-top:10px;border-left:3px solid #EF9F27}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;padding:8px 10px;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
+td:first-child{color:var(--text);font-weight:500}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.mono{font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:var(--text2)}
+
+/* History */
+.history-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface)}
+.history-item:hover{background:var(--surface2)}
+.history-desc{font-size:13px;color:var(--text);max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-fp{font-size:16px;font-weight:600;color:var(--accent)}
+.history-meta{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* Divider */
+hr{border:none;border-top:1px solid var(--border);margin:16px 0}
+
+/* Select with arrow */
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238A8A85' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
+
+/* Responsive */
+@media(max-width:600px){
+  .grid2,.grid3{grid-template-columns:1fr}
+  .metric-grid{grid-template-columns:1fr 1fr}
+  .result-hero{flex-direction:column;align-items:flex-start;gap:12px}
+}
+
+/* Loading spinner */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Empty state */
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-icon{font-size:32px;margin-bottom:10px}
+
+/* Totals bar */
+.totals-bar{background:var(--accent);color:#fff;border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.totals-bar .t-label{font-size:12px;opacity:0.8}
+.totals-bar .t-val{font-size:20px;font-weight:700}
+
+/* Category section in reference */
+.ref-section{margin-bottom:24px}
+.ref-section h3{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+
+/* Complexity table */
+.complexity-table th,.complexity-table td{font-size:12px;padding:6px 8px}
+.low{color:var(--green);font-weight:600}
+.usually{color:var(--amber);font-weight:600}
+.high{color:var(--red);font-weight:600}
+
+.note{font-size:12px;color:var(--text3);margin-top:6px;padding:8px 12px;background:var(--surface2);border-radius:var(--radius)}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="header">
+  <h1>Function Point Calculator</h1>
+  <p>Simplified Method &nbsp;·&nbsp; 1 FP = 4.85 giờ công</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('calc')">Tính FP</button>
+  <button class="tab" onclick="switchTab('task')">Task → FP</button>
+  <button class="tab" onclick="switchTab('history')">Lịch sử</button>
+  <button class="tab" onclick="switchTab('ref')">Tra cứu</button>
+  <button class="tab" onclick="switchTab('tips')">Tips & Tricks</button>
+</div>
+
+<!-- ==================== TAB: CALC ==================== -->
+<div id="panel-calc" class="panel active">
+
+  <div class="card">
+    <div class="card-title">Mô tả feature</div>
+    <div class="field">
+      <textarea id="desc" placeholder="Nhập mô tả feature / user story...&#10;VD: Màn hình hiển thị WBS dạng tree, có drag-drop để reorder các node"></textarea>
+    </div>
+    <div id="ai-result" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Phân loại & hệ số</div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="field">
+        <label>Loại FP</label>
+        <select id="fptype" onchange="updateCalc()">
+          <option value="">— chọn loại —</option>
+          <option value="EI">EI — External Input (Create/Update/Delete)</option>
+          <option value="EO">EO — External Output (có tính toán / chart)</option>
+          <option value="EQ">EQ — External Query (search / view / login)</option>
+          <option value="ILF">ILF — Internal Logic File</option>
+          <option value="EIF">EIF — External Interface File</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Base FP</label>
+        <input id="basefp" type="text" readonly placeholder="—">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>UI Factor</label>
+      <select id="ui1" onchange="updateCalc()">
+        <option value="0">Không có UI đặc biệt (+0)</option>
+        <optgroup label="Layout">
+          <option value="0.2">Block list / Card layout — LAYOUT-BLOCK-001 (+0.2)</option>
+          <option value="0.4">Master-Detail (2 panel) — LAYOUT-MASTER-001 (+0.4)</option>
+          <option value="0.23">Tabbed navigation — LAYOUT-TAB-001 (+0.23)</option>
+        </optgroup>
+        <optgroup label="Tables">
+          <option value="0.5">Editable table (in-place edit) — TABLE-EDITABLE-001 (+0.5)</option>
+          <option value="0.3">Infinite scroll table — TABLE-INFSCROLL-001 (+0.3)</option>
+          <option value="0.45">Column/Row pinning — TABLE-PINNING-001 (+0.45)</option>
+          <option value="0.6">Drag-drop rows/columns — TABLE-DRAGDROP-001 (+0.6)</option>
+          <option value="0.45">Tree-structured table — TABLE-TREE-001 (+0.45)</option>
+        </optgroup>
+        <optgroup label="Tree">
+          <option value="0.7">Tree view (expand/collapse) — TREE-TREE-001 (+0.7)</option>
+          <option value="0.5">Drag-drop tree nodes — TREE-DRAGDROP-001 (+0.5)</option>
+        </optgroup>
+        <optgroup label="Chart / Calendar / Export">
+          <option value="0.3">Real-time chart/dashboard — CHART-REALTIME-001 (+0.3)</option>
+          <option value="0.38">Gantt chart — CALENDAR-GANTT-001 (+0.38)</option>
+          <option value="0.7">Export by template (PDF/Excel) — EXPORT-BY-TEMP001 (+0.7)</option>
+          <option value="0.4">Drag-drop board (Kanban) — DRAGDROP-BOARD-001 (+0.4)</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Engine Factor</label>
+      <select id="eng1" onchange="updateCalc()">
+        <option value="0">Không có engine đặc biệt (+0)</option>
+        <optgroup label="Integration">
+          <option value="0.5">API Aggregator (nhiều API song song) — ENG-INT-001 (+0.5)</option>
+        </optgroup>
+        <optgroup label="Rule & Decision">
+          <option value="0.5">Score Calculator (công thức, biến số) — ENG-RUL-001 (+0.5)</option>
+          <option value="0.5">Cross-System Rule (check nhiều DB/service) — ENG-RUL-002 (+0.5)</option>
+          <option value="0.2">Rule Pipeline (nhiều rule nối tiếp) — ENG-RUL-003 (+0.2)</option>
+          <option value="0.2">Rule Context Passing (output → input) — ENG-RUL-004 (+0.2)</option>
+        </optgroup>
+        <optgroup label="Workflow">
+          <option value="0.5">Dynamic Router (routing theo state) — ENG-WKF-001 (+0.5)</option>
+          <option value="0.2">State Checkpoint (lưu state để resume) — ENG-WKF-002 (+0.2)</option>
+          <option value="0.5">DAG Scheduler (job dependency) — ENG-WKF-003 (+0.5)</option>
+        </optgroup>
+        <optgroup label="Output">
+          <option value="0.5">Report/Export Engine (derived data) — ENG-OUT-001 (+0.5)</option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+
+  <div id="result-area" style="display:none">
+    <div class="result-hero">
+      <div>
+        <div style="font-size:12px;color:var(--accent-text);margin-bottom:4px">Total Function Points</div>
+        <div class="result-fp" id="total-fp">—</div>
+        <div id="fp-badge" style="margin-top:8px"></div>
+      </div>
+      <div id="result-right" style="text-align:right"></div>
+    </div>
+    <div class="formula-box" id="formula-text"></div>
+    <div class="metric-grid" style="margin-top:12px">
+      <div class="metric">
+        <div class="metric-val" id="m-hours">—</div>
+        <div class="metric-lbl">Giờ công (× 4.85h)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="m-md">—</div>
+        <div class="metric-lbl">Man-day (8h/ngày)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="m-base">—</div>
+        <div class="metric-lbl">Base FP (chưa factor)</div>
+      </div>
+    </div>
+    <button class="btn btn-full" style="margin-top:12px" onclick="saveToHistory()">+ Lưu vào lịch sử</button>
+  </div>
+
+</div>
+
+<!-- ==================== TAB: TASK ==================== -->
+<div id="panel-task" class="panel">
+  <div class="card">
+    <div class="card-title">Quy đổi Task/Research/Meeting → FP</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Áp dụng cho: Task, Management, BrSE, Research, Testing, Self-Study... Nguyên tắc: làm tròn lên.</p>
+
+    <div class="field">
+      <label>Mô tả task</label>
+      <input type="text" id="task-desc" placeholder="VD: Research và viết tài liệu QA training">
+    </div>
+    <div class="field">
+      <label>Thời gian thực tế (giờ)</label>
+      <input type="number" id="task-hours" min="0" max="8" step="0.5" placeholder="VD: 3" oninput="calcTask()">
+    </div>
+
+    <div id="task-result" style="display:none;margin-top:16px">
+      <div class="result-hero">
+        <div>
+          <div style="font-size:12px;color:var(--accent-text);margin-bottom:4px">Function Points</div>
+          <div class="result-fp" id="task-fp">—</div>
+          <span class="badge badge-TASK" style="margin-top:8px">TASK</span>
+        </div>
+        <div style="text-align:right">
+          <div class="metric" style="display:inline-block;min-width:100px">
+            <div class="metric-val" id="task-md">—</div>
+            <div class="metric-lbl">Man-day</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bảng quy đổi chuẩn</div>
+    <table>
+      <thead><tr><th>Khoảng thời gian</th><th>MD</th><th>Function Point</th></tr></thead>
+      <tbody>
+        <tr><td>0 → 1 giờ</td><td>0.13 MD</td><td><b>0.21 FP</b></td></tr>
+        <tr><td>1 → 2 giờ</td><td>0.25 MD</td><td><b>0.41 FP</b></td></tr>
+        <tr><td>3 → 4 giờ</td><td>0.50 MD</td><td><b>0.82 FP</b></td></tr>
+        <tr><td>5 → 6 giờ</td><td>0.75 MD</td><td><b>1.24 FP</b></td></tr>
+        <tr><td>7 → 8 giờ</td><td>1.00 MD</td><td><b>1.65 FP</b></td></tr>
+      </tbody>
+    </table>
+    <div class="note">Ví dụ: Ms. Mi Yeong nghiên cứu và chuẩn bị tài liệu QA training mất 3 giờ → <b>0.82 FP</b></div>
+  </div>
+</div>
+
+<!-- ==================== TAB: HISTORY ==================== -->
+<div id="panel-history" class="panel">
+  <div id="totals-area" style="display:none">
+    <div class="totals-bar">
+      <div><div class="t-label">Tổng FP</div><div class="t-val" id="total-sum">0</div></div>
+      <div style="text-align:center"><div class="t-label">Tổng giờ công</div><div class="t-val" id="total-hours">0h</div></div>
+      <div style="text-align:right"><div class="t-label">Tổng Man-day</div><div class="t-val" id="total-md">0</div></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <button class="btn btn-sm" onclick="exportHistory()">⬇ Export CSV</button>
+      <button class="btn btn-sm" style="color:var(--red);border-color:var(--red)" onclick="clearHistory()">Xóa tất cả</button>
+    </div>
+  </div>
+  <div id="history-list"><div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div></div>
+</div>
+
+<!-- ==================== TAB: REFERENCE ==================== -->
+<div id="panel-ref" class="panel">
+
+  <div class="card">
+    <div class="card-title">Base FP theo loại</div>
+    <table>
+      <thead><tr><th>Loại</th><th>Tên đầy đủ</th><th>Base FP</th><th>Nhóm</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-ILF">ILF</span></td><td>Internal Logic File</td><td><b>7.5</b></td><td>Data</td></tr>
+        <tr><td><span class="badge badge-EIF">EIF</span></td><td>External Interface File</td><td><b>5.4</b></td><td>Data</td></tr>
+        <tr><td><span class="badge badge-EI">EI</span></td><td>External Input</td><td><b>4.0</b></td><td>Transaction</td></tr>
+        <tr><td><span class="badge badge-EO">EO</span></td><td>External Output</td><td><b>5.2</b></td><td>Transaction</td></tr>
+        <tr><td><span class="badge badge-EQ">EQ</span></td><td>External Query</td><td><b>3.9</b></td><td>Transaction</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Công thức: Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">UI Factor — danh sách đầy đủ</div>
+    <table>
+      <thead><tr><th>Category</th><th>Pattern</th><th>ID</th><th>Weight</th></tr></thead>
+      <tbody>
+        <tr><td>Layout</td><td>Block list / Card layout</td><td class="mono">LAYOUT-BLOCK-001</td><td><b>0.20</b></td></tr>
+        <tr><td>Layout</td><td>Master-Detail (2 panel)</td><td class="mono">LAYOUT-MASTER-001</td><td><b>0.40</b></td></tr>
+        <tr><td>Layout</td><td>Tabbed navigation</td><td class="mono">LAYOUT-TAB-001</td><td><b>0.23</b></td></tr>
+        <tr><td>Tables</td><td>Content editable table</td><td class="mono">TABLE-EDITABLE-001</td><td><b>0.50</b></td></tr>
+        <tr><td>Tables</td><td>Infinite scroll table</td><td class="mono">TABLE-INFSCROLL-001</td><td><b>0.30</b></td></tr>
+        <tr><td>Tables</td><td>Column/Row pinning</td><td class="mono">TABLE-PINNING-001</td><td><b>0.45</b></td></tr>
+        <tr><td>Tables</td><td>Drag-drop rows/columns</td><td class="mono">TABLE-DRAGDROP-001</td><td><b>0.60</b></td></tr>
+        <tr><td>Tables</td><td>Tree-structured table</td><td class="mono">TABLE-TREE-001</td><td><b>0.45</b></td></tr>
+        <tr><td>Tree</td><td>Tree view (expand/collapse)</td><td class="mono">TREE-TREE-001</td><td><b>0.70</b></td></tr>
+        <tr><td>Tree</td><td>Drag-drop tree nodes</td><td class="mono">TREE-DRAGDROP-001</td><td><b>0.50</b></td></tr>
+        <tr><td>Chart</td><td>Real-time chart/dashboard</td><td class="mono">CHART-REALTIME-001</td><td><b>0.30</b></td></tr>
+        <tr><td>Calendar</td><td>Gantt chart</td><td class="mono">CALENDAR-GANTT-001</td><td><b>0.38</b></td></tr>
+        <tr><td>Export</td><td>Export by template (PDF/Excel)</td><td class="mono">EXPORT-BY-TEMP001</td><td><b>0.70</b></td></tr>
+        <tr><td>Interaction</td><td>Drag-drop board (Kanban)</td><td class="mono">DRAGDROP-BOARD-001</td><td><b>0.40</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Engine Factor — danh sách đầy đủ</div>
+    <table>
+      <thead><tr><th>Group</th><th>Pattern</th><th>ID</th><th>Weight</th></tr></thead>
+      <tbody>
+        <tr><td>Integration</td><td>API Aggregator — gọi nhiều API song song, merge kết quả</td><td class="mono">ENG-INT-001</td><td><b>0.50</b></td></tr>
+        <tr><td>Rule & Decision</td><td>Score Calculator — tính điểm, công thức, biến số</td><td class="mono">ENG-RUL-001</td><td><b>0.50</b></td></tr>
+        <tr><td>Rule & Decision</td><td>Cross-System Rule — check nhiều DB/microservice</td><td class="mono">ENG-RUL-002</td><td><b>0.50</b></td></tr>
+        <tr><td>Rule & Decision</td><td>Rule Pipeline — nhiều rule nối tiếp theo kết quả trung gian</td><td class="mono">ENG-RUL-003</td><td><b>0.20</b></td></tr>
+        <tr><td>Rule & Decision</td><td>Rule Context Passing — output rule này → input rule kia</td><td class="mono">ENG-RUL-004</td><td><b>0.20</b></td></tr>
+        <tr><td>Workflow</td><td>Dynamic Router — routing động theo payload/business state</td><td class="mono">ENG-WKF-001</td><td><b>0.50</b></td></tr>
+        <tr><td>Workflow</td><td>State Checkpoint — lưu state giữa chừng để resume</td><td class="mono">ENG-WKF-002</td><td><b>0.20</b></td></tr>
+        <tr><td>Workflow</td><td>DAG Scheduler — job phức tạp có dependency</td><td class="mono">ENG-WKF-003</td><td><b>0.50</b></td></tr>
+        <tr><td>Output</td><td>Report/Export Engine — sinh báo cáo có derived data</td><td class="mono">ENG-OUT-001</td><td><b>0.50</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Complexity Weight — Orthodox Method (Phụ lục)</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Dùng khi cần tính chính xác hơn thay vì dùng average. Xác định Low/Usually/High theo số RET/FTR và DET.</p>
+
+    <div class="ref-section">
+      <h3>ILF & EIF — theo RET × DET</h3>
+      <table class="complexity-table">
+        <thead><tr><th>RET \ DET</th><th>1–19</th><th>20–50</th><th>51+</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td class="low">Low</td><td class="low">Low</td><td class="usually">Usually</td></tr>
+          <tr><td>2–5</td><td class="low">Low</td><td class="usually">Usually</td><td class="high">High</td></tr>
+          <tr><td>6+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:12px;margin-top:8px;font-size:12px">
+        <span><b>ILF:</b> Low=7, Usually=10, High=15</span>
+        <span><b>EIF:</b> Low=5, Usually=7, High=10</span>
+      </div>
+    </div>
+
+    <div class="ref-section">
+      <h3>EI — theo FTR × DET</h3>
+      <table class="complexity-table">
+        <thead><tr><th>FTR \ DET</th><th>1–4</th><th>5–15</th><th>16+</th></tr></thead>
+        <tbody>
+          <tr><td>0–1</td><td class="low">Low</td><td class="low">Low</td><td class="usually">Usually</td></tr>
+          <tr><td>2</td><td class="low">Low</td><td class="usually">Usually</td><td class="high">High</td></tr>
+          <tr><td>3+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:12px;margin-top:8px"><b>EI weights:</b> Low=3, Usually=4, High=6</div>
+    </div>
+
+    <div class="ref-section">
+      <h3>EO & EQ — theo FTR × DET</h3>
+      <table class="complexity-table">
+        <thead><tr><th>FTR \ DET</th><th>1–5</th><th>6–19</th><th>20+</th></tr></thead>
+        <tbody>
+          <tr><td>0–1</td><td class="low">Low</td><td class="low">Low</td><td class="usually">Usually</td></tr>
+          <tr><td>2–3</td><td class="low">Low</td><td class="usually">Usually</td><td class="high">High</td></tr>
+          <tr><td>4+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
+        </tbody>
+      </table>
+      <div style="display:flex;gap:12px;margin-top:8px;font-size:12px">
+        <span><b>EO weights:</b> Low=4, Usually=5, High=7</span>
+        <span><b>EQ weights:</b> Low=3, Usually=4, High=6</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== TAB: TIPS ==================== -->
+<div id="panel-tips" class="panel">
+
+  <div class="card">
+    <div class="card-title">Cách phân loại nhanh</div>
+    <table>
+      <thead><tr><th>Câu hỏi</th><th>→ Loại</th></tr></thead>
+      <tbody>
+        <tr><td>Lưu / tạo / sửa / xóa data vào DB?</td><td><span class="badge badge-EI">EI</span></td></tr>
+        <tr><td>Hiển thị data + có tính toán / thống kê / biểu đồ?</td><td><span class="badge badge-EO">EO</span></td></tr>
+        <tr><td>Chỉ đọc / search / hiển thị / download / login?</td><td><span class="badge badge-EQ">EQ</span></td></tr>
+        <tr><td>Data table thuộc hệ thống mình quản lý?</td><td><span class="badge badge-ILF">ILF</span></td></tr>
+        <tr><td>Data đến từ hệ thống bên ngoài?</td><td><span class="badge badge-EIF">EIF</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Các trường hợp hay nhầm</div>
+    <table>
+      <thead><tr><th>Tình huống</th><th>Đúng</th><th>Sai</th><th>Lý do</th></tr></thead>
+      <tbody>
+        <tr><td>Data Loading</td><td><span class="badge badge-EI">EI</span></td><td>EO, EQ</td><td>Load data vào hệ thống → EI</td></tr>
+        <tr><td>Graph / Biểu đồ</td><td><span class="badge badge-EO">EO</span></td><td>EQ</td><td>Biểu đồ luôn có tính toán → EO</td></tr>
+        <tr><td>Download file</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Chỉ lấy ra, không tính toán → EQ</td></tr>
+        <tr><td>Login</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Verify password, không maintain ILF → EQ</td></tr>
+        <tr><td>User Authentication</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Tương tự Login → EQ</td></tr>
+        <tr><td>Statistics / Thống kê</td><td><span class="badge badge-EO">EO</span></td><td>EQ</td><td>Có tổng hợp, tính toán → EO</td></tr>
+        <tr><td>Send (email, notify...)</td><td><span class="badge badge-EQ">EQ</span> / <span class="badge badge-EO">EO</span></td><td>EI</td><td>Gửi ra ngoài, không maintain ILF → EQ/EO</td></tr>
+        <tr><td>Code data (lookup table)</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Loại khỏi scope</td></tr>
+        <tr><td>Temporary files</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Loại khỏi scope</td></tr>
+        <tr><td>Attachment đơn lẻ</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Không complete unit process</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Verify FP — checklist 3 bước</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.8">
+      <p style="margin-bottom:10px"><b style="color:var(--text)">① Dùng cột A để sort và đánh số thứ tự</b> trong form tính FP.</p>
+      <p style="margin-bottom:6px"><b style="color:var(--text)">② Data Functions (ILF, EIF):</b></p>
+      <ul style="padding-left:18px;margin-bottom:10px">
+        <li>Xóa code data — chỉ giữ business data và reference data</li>
+        <li>Sort theo "Data Function Name" để loại duplicate</li>
+        <li>Kiểm tra subordinate relationship — nếu A là con của B thì tính chung 1 ILF</li>
+        <li>(Orthodox) Verify RET và DET counts</li>
+      </ul>
+      <p style="margin-bottom:6px"><b style="color:var(--text)">② Transaction Functions (EI, EO, EQ):</b></p>
+      <ul style="padding-left:18px;margin-bottom:10px">
+        <li>Sort theo unit process name để loại duplicate</li>
+        <li>Nếu một feature vừa có EO vừa có EQ → chỉ giữ 1 loại phù hợp hơn</li>
+        <li>Loại bỏ transaction liên quan đến code data</li>
+        <li>(Orthodox) Verify FTR và DET counts</li>
+      </ul>
+      <p><b style="color:var(--text)">③ Cross-check</b> Data vs Transaction — mỗi ILF phải có ít nhất 1 EI tương ứng để maintain nó.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ví dụ thực tế từ slide</div>
+    <table>
+      <thead><tr><th>Feature</th><th>Type</th><th>UI</th><th>Engine</th><th>Total FP</th></tr></thead>
+      <tbody>
+        <tr><td>View Kanban Board</td><td><span class="badge badge-EQ">EQ</span></td><td>—</td><td>—</td><td><b>3.9</b></td></tr>
+        <tr><td>Update Card (drag-drop Kanban)</td><td><span class="badge badge-EI">EI</span></td><td>+0.4</td><td>—</td><td><b>5.6</b></td></tr>
+        <tr><td>View Task Statistics (chart)</td><td><span class="badge badge-EO">EO</span></td><td>+0.3</td><td>—</td><td><b>6.76</b></td></tr>
+        <tr><td>View WBS Tree</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.7</td><td>—</td><td><b>6.63</b></td></tr>
+        <tr><td>View Gantt Chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.38</td><td>—</td><td><b>7.18</b></td></tr>
+        <tr><td>Create/Update/Delete WBS</td><td><span class="badge badge-EI">EI</span></td><td>—</td><td>—</td><td><b>4.0</b></td></tr>
+        <tr><td>Calc bid price (Naver API)</td><td><span class="badge badge-EO">EO</span></td><td>—</td><td>+0.5</td><td><b>7.8</b></td></tr>
+        <tr><td>Block list danh sách công ty</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.2</td><td>—</td><td><b>4.68</b></td></tr>
+        <tr><td>Export báo cáo PDF/Excel có chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.7</td><td>+0.5</td><td><b>11.44</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚠ Lưu ý quan trọng</div>
+    <div class="tip-box">
+      Weight adjustment (UI Factor / Engine Factor) phải có lý do rõ ràng, phải được <b>QA/PM/TL review</b> và subject to <b>post-audit by QS</b>. Hạn chế dùng tùy tiện. Nếu UI/Engine bình thường → để weight = 0.
+    </div>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+const BASE={EI:4,EO:5.2,EQ:3.9,ILF:7.5,EIF:5.4};
+let history=JSON.parse(localStorage.getItem('fp_history')||'[]');
+
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    const panels=['calc','task','history','ref','tips'];
+    t.classList.toggle('active',panels[i]===name);
+  });
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  if(name==='history')renderHistory();
+}
+
+function updateCalc(){
+  const type=document.getElementById('fptype').value;
+  const ui=parseFloat(document.getElementById('ui1').value)||0;
+  const eng=parseFloat(document.getElementById('eng1').value)||0;
+  if(!type){document.getElementById('basefp').value='';document.getElementById('result-area').style.display='none';return;}
+  const base=BASE[type];
+  document.getElementById('basefp').value=base+' FP';
+  const total=base*(1+ui+eng);
+  document.getElementById('result-area').style.display='block';
+  document.getElementById('total-fp').textContent=total.toFixed(2)+' FP';
+  document.getElementById('fp-badge').innerHTML=`<span class="badge badge-${type}">${type}</span>`;
+  const uiStr=ui>0?` + ${ui.toFixed(2)} UI`:'';
+  const engStr=eng>0?` + ${eng.toFixed(2)} Eng`:'';
+  document.getElementById('formula-text').textContent=`${base} × (1${uiStr}${engStr}) = ${total.toFixed(2)} FP`;
+  document.getElementById('m-hours').textContent=(total*4.85).toFixed(1)+'h';
+  document.getElementById('m-md').textContent=(total*4.85/8).toFixed(2)+' MD';
+  document.getElementById('m-base').textContent=base+' FP';
+}
+
+function saveToHistory(){
+  const type=document.getElementById('fptype').value;
+  if(!type)return;
+  const ui=parseFloat(document.getElementById('ui1').value)||0;
+  const eng=parseFloat(document.getElementById('eng1').value)||0;
+  const base=BASE[type];
+  const total=+(base*(1+ui+eng)).toFixed(2);
+  const desc=document.getElementById('desc').value.trim()||'(không có mô tả)';
+  history.unshift({id:Date.now(),desc,type,base,ui,eng,total,hours:+(total*4.85).toFixed(1),md:+(total*4.85/8).toFixed(2),date:new Date().toLocaleDateString('vi-VN')});
+  localStorage.setItem('fp_history',JSON.stringify(history));
+  alert('Đã lưu! Xem trong tab Lịch sử.');
+}
+
+function renderHistory(){
+  const el=document.getElementById('history-list');
+  if(!history.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div>';document.getElementById('totals-area').style.display='none';return;}
+  const totalFP=history.reduce((s,h)=>s+h.total,0);
+  document.getElementById('totals-area').style.display='block';
+  document.getElementById('total-sum').textContent=totalFP.toFixed(2)+' FP';
+  document.getElementById('total-hours').textContent=(totalFP*4.85).toFixed(1)+'h';
+  document.getElementById('total-md').textContent=(totalFP*4.85/8).toFixed(2)+' MD';
+  el.innerHTML=history.map(h=>`
+    <div class="history-item">
+      <div>
+        <div class="history-desc">${h.desc}</div>
+        <div class="history-meta"><span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span> &nbsp;Base ${h.base} FP &nbsp;·&nbsp; ${h.date}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="history-fp">${h.total} FP</div>
+        <div style="font-size:11px;color:var(--text3)">${h.hours}h / ${h.md} MD</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function clearHistory(){
+  if(!confirm('Xóa toàn bộ lịch sử?'))return;
+  history=[];localStorage.removeItem('fp_history');renderHistory();
+}
+
+function exportHistory(){
+  const rows=[['Mô tả','Loại','Base FP','UI Weight','Engine Weight','Total FP','Giờ công','Man-day','Ngày']];
+  history.forEach(h=>rows.push([`"${h.desc}"`,h.type,h.base,h.ui,h.eng,h.total,h.hours,h.md,h.date]));
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  a.download='FP_History.csv';a.click();
+}
+
+const TASK_MAP=[
+  {max:1,md:0.13,fp:0.21},
+  {max:2,md:0.25,fp:0.41},
+  {max:4,md:0.50,fp:0.82},
+  {max:6,md:0.75,fp:1.24},
+  {max:8,md:1.00,fp:1.65}
+];
+function calcTask(){
+  const h=parseFloat(document.getElementById('task-hours').value);
+  if(isNaN(h)||h<0){document.getElementById('task-result').style.display='none';return;}
+  const row=TASK_MAP.find(r=>h<=r.max)||TASK_MAP[TASK_MAP.length-1];
+  document.getElementById('task-result').style.display='block';
+  document.getElementById('task-fp').textContent=row.fp+' FP';
+  document.getElementById('task-md').textContent=row.md+' MD';
+}
+
+async function autoClassify(){
+  const desc=document.getElementById('desc').value.trim();
+  if(!desc){alert('Nhập mô tả feature trước nhé!');return;}
+  const btn=document.getElementById('ai-btn');
+  btn.innerHTML='<span class="spinner"></span> Đang phân tích...';btn.disabled=true;
+  document.getElementById('ai-result').innerHTML='';
+  try{
+    const sys=`Bạn là chuyên gia Function Point theo chuẩn IFPUG và LG CNS CoE Simplified Method.
+Phân loại feature và trả về JSON hợp lệ duy nhất, không có markdown, không có text thêm.
+Format:
+{"fpType":"EI|EO|EQ|ILF|EIF","uiWeight":number,"uiId":"ID hoặc empty","engWeight":number,"engId":"ID hoặc empty","reasoning":"giải thích ngắn 1-2 câu","tip":"edge case hoặc empty"}
+UI weights: LAYOUT-BLOCK-001=0.2, LAYOUT-MASTER-001=0.4, LAYOUT-TAB-001=0.23, TABLE-EDITABLE-001=0.5, TABLE-INFSCROLL-001=0.3, TABLE-PINNING-001=0.45, TABLE-DRAGDROP-001=0.6, TABLE-TREE-001=0.45, TREE-TREE-001=0.7, TREE-DRAGDROP-001=0.5, CHART-REALTIME-001=0.3, CALENDAR-GANTT-001=0.38, EXPORT-BY-TEMP001=0.7, DRAGDROP-BOARD-001=0.4
+Engine weights: ENG-INT-001=0.5, ENG-RUL-001=0.5, ENG-RUL-002=0.5, ENG-RUL-003=0.2, ENG-RUL-004=0.2, ENG-WKF-001=0.5, ENG-WKF-002=0.2, ENG-WKF-003=0.5, ENG-OUT-001=0.5
+Nếu không có UI hoặc Engine đặc biệt, trả 0 và empty string.`;
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,system:sys,messages:[{role:'user',content:desc}]})});
+    const data=await res.json();
+    const text=data.content.find(b=>b.type==='text')?.text||'';
+    const p=JSON.parse(text.replace(/```json|```/g,'').trim());
+    document.getElementById('fptype').value=p.fpType;
+    document.getElementById('ui1').value=String(p.uiWeight||0);
+    document.getElementById('eng1').value=String(p.engWeight||0);
+    updateCalc();
+    let html=`<div class="ai-box"><b>AI phân loại:</b> ${p.reasoning}`;
+    if(p.uiId)html+=`<br><span style="color:var(--text3)">UI: ${p.uiId} (+${p.uiWeight})</span>`;
+    if(p.engId)html+=`<br><span style="color:var(--text3)">Engine: ${p.engId} (+${p.engWeight})</span>`;
+    if(p.tip)html+=`</div><div class="tip-box">⚠ ${p.tip}`;
+    html+='</div>';
+    document.getElementById('ai-result').innerHTML=html;
+  }catch(e){
+    document.getElementById('ai-result').innerHTML=`<div class="tip-box">Lỗi: ${e.message}. Vui lòng phân loại thủ công.</div>`;
+  }
+  btn.innerHTML='✦ Tự động phân loại bằng AI';btn.disabled=false;
+}
+</script>
+</body>
+</html>
