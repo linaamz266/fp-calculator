@@ -71,6 +71,9 @@ tr:hover td{background:var(--surface2)}
 hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238A8A85' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
 @media(max-width:600px){.grid2{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr 1fr}.result-hero{flex-direction:column;align-items:flex-start;gap:12px}.tabs{gap:2px}}
+.btn-save-always{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-save-always:not([disabled]):hover{background:#3832B0;border-color:#3832B0}
+.btn-save-always[disabled]{background:var(--surface2);color:var(--text3);border-color:var(--border2);cursor:not-allowed}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:40px 20px;color:var(--text3)}
@@ -123,8 +126,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <div class="app">
 
 <div class="header">
-  <h1>CoE Function Point Calculator</h1>
-  <p>LG CNS Solution CoE — Simplified Method &nbsp;·&nbsp; 1 FP = 4.85 giờ công</p>
+  <h1>Function Point Calculator</h1>
+  <p>Simplified Method &nbsp;·&nbsp; 1 FP = 4.85 giờ công</p>
 </div>
 
 <div class="tabs">
@@ -288,8 +291,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div class="metric"><div class="metric-val" id="m-md">—</div><div class="metric-lbl">Man-day (8h/ngày)</div></div>
       <div class="metric"><div class="metric-val" id="m-base">—</div><div class="metric-lbl">Base FP (chưa factor)</div></div>
     </div>
-    <button class="btn btn-full" style="margin-top:4px" onclick="saveToHistory()">+ Lưu vào lịch sử</button>
   </div>
+  <button id="btn-save-calc" class="btn btn-full btn-save-always" style="margin-top:12px" onclick="saveToHistory()" disabled>+ Lưu vào lịch sử</button>
 </div>
 
 <!-- ===== TAB: TASK ===== -->
@@ -312,6 +315,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         </div>
       </div>
     </div>
+    <button id="btn-save-task" class="btn btn-full btn-save-always" style="margin-top:12px" onclick="saveTaskToHistory()" disabled>+ Lưu vào lịch sử</button>
   </div>
   <div class="card">
     <div class="card-title">Bảng quy đổi chuẩn</div>
@@ -373,7 +377,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <tr><td>Application Baseline</td><td>Đo toàn bộ size của app đang vận hành (maintenance)</td></tr>
       </tbody>
     </table>
-    <div class="note">Tại LG CNS CoE: thông thường dùng <b>Development Project</b> cho các story/feature mới trong sprint.</div>
+    <div class="note">Thông thường dùng <b>Development Project</b> cho các story/feature mới trong sprint.</div>
   </div>
 
   <div class="card">
@@ -708,11 +712,18 @@ function switchTab(name){
   if(name==='history')renderHistory();
 }
 
+function checkCalcSave(){
+  const desc=document.getElementById('desc').value.trim();
+  const type=document.getElementById('fptype').value;
+  const btn=document.getElementById('btn-save-calc');
+  btn.disabled=!(desc&&type);
+}
+
 function updateCalc(){
   const type=document.getElementById('fptype').value;
   const ui=parseFloat(document.getElementById('ui1').value)||0;
   const eng=parseFloat(document.getElementById('eng1').value)||0;
-  if(!type){document.getElementById('basefp').value='';document.getElementById('result-area').style.display='none';return;}
+  if(!type){document.getElementById('basefp').value='';document.getElementById('result-area').style.display='none';checkCalcSave();return;}
   const base=BASE[type];
   document.getElementById('basefp').value=base+' FP';
   const total=base*(1+ui+eng);
@@ -725,6 +736,7 @@ function updateCalc(){
   document.getElementById('m-hours').textContent=(total*4.85).toFixed(1)+'h';
   document.getElementById('m-md').textContent=(total*4.85/8).toFixed(2)+' MD';
   document.getElementById('m-base').textContent=base+' FP';
+  checkCalcSave();
 }
 
 function saveToHistory(){
@@ -738,6 +750,13 @@ function saveToHistory(){
   history.unshift({id:Date.now(),desc,type,base,ui,eng,total,hours:+(total*4.85).toFixed(1),md:+(total*4.85/8).toFixed(2),date:new Date().toLocaleDateString('vi-VN')});
   localStorage.setItem('fp_history',JSON.stringify(history));
   alert('Đã lưu! Xem trong tab Lịch sử.');
+  document.getElementById('desc').value='';
+  document.getElementById('fptype').value='';
+  document.getElementById('ui1').value='0';
+  document.getElementById('eng1').value='0';
+  document.getElementById('result-area').style.display='none';
+  document.getElementById('basefp').value='';
+  document.getElementById('btn-save-calc').disabled=true;
 }
 
 function renderHistory(){
@@ -753,20 +772,27 @@ function renderHistory(){
   document.getElementById('total-md').textContent=(totalFP*4.85/8).toFixed(2)+' MD';
   el.innerHTML=history.map(h=>`
     <div class="history-item">
-      <div>
+      <div style="flex:1;min-width:0">
         <div class="history-desc">${h.desc}</div>
         <div class="history-meta"><span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span>&nbsp;Base ${h.base} FP&nbsp;·&nbsp;${h.date}</div>
       </div>
-      <div style="text-align:right">
+      <div style="text-align:right;flex-shrink:0;margin-left:12px">
         <div class="history-fp">${h.total} FP</div>
         <div style="font-size:11px;color:var(--text3)">${h.hours}h / ${h.md} MD</div>
       </div>
+      <button onclick="deleteHistoryItem(${h.id})" title="Xóa" style="margin-left:10px;flex-shrink:0;background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px 6px;border-radius:6px;line-height:1;transition:color 0.15s,background 0.15s" onmouseover="this.style.color='var(--red)';this.style.background='var(--red-bg)'" onmouseout="this.style.color='var(--text3)';this.style.background='none'">✕</button>
     </div>`).join('');
 }
 
 function clearHistory(){
   if(!confirm('Xóa toàn bộ lịch sử?'))return;
   history=[];localStorage.removeItem('fp_history');renderHistory();
+}
+
+function deleteHistoryItem(id){
+  history=history.filter(h=>h.id!==id);
+  localStorage.setItem('fp_history',JSON.stringify(history));
+  renderHistory();
 }
 
 function exportHistory(){
@@ -778,14 +804,38 @@ function exportHistory(){
   a.download='FP_History.csv';a.click();
 }
 
+function checkTaskSave(){
+  const desc=document.getElementById('task-desc').value.trim();
+  const hours=document.getElementById('task-hours').value;
+  const btn=document.getElementById('btn-save-task');
+  btn.disabled=!(desc&&hours!=='');
+}
+
 const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,fp:0.82},{max:6,md:0.75,fp:1.24},{max:8,md:1.00,fp:1.65}];
 function calcTask(){
   const h=parseFloat(document.getElementById('task-hours').value);
-  if(isNaN(h)||h<0){document.getElementById('task-result').style.display='none';return;}
+  if(isNaN(h)||h<0){document.getElementById('task-result').style.display='none';checkTaskSave();return;}
   const row=TASK_MAP.find(r=>h<=r.max)||TASK_MAP[TASK_MAP.length-1];
   document.getElementById('task-result').style.display='block';
   document.getElementById('task-fp').textContent=row.fp+' FP';
   document.getElementById('task-md').textContent=row.md+' MD';
+  checkTaskSave();
+}
+
+function saveTaskToHistory(){
+  const h=parseFloat(document.getElementById('task-hours').value);
+  if(isNaN(h)||h<0){alert('Nhập thời gian task trước!');return;}
+  const row=TASK_MAP.find(r=>h<=r.max)||TASK_MAP[TASK_MAP.length-1];
+  const desc=document.getElementById('task-desc').value.trim()||'(không có mô tả)';
+  const total=row.fp;
+  const md=row.md;
+  history.unshift({id:Date.now(),desc,type:'TASK',base:total,ui:0,eng:0,total,hours:+(total*4.85).toFixed(1),md,date:new Date().toLocaleDateString('vi-VN')});
+  localStorage.setItem('fp_history',JSON.stringify(history));
+  alert('Đã lưu! Xem trong tab Lịch sử.');
+  document.getElementById('task-desc').value='';
+  document.getElementById('task-hours').value='';
+  document.getElementById('task-result').style.display='none';
+  document.getElementById('btn-save-task').disabled=true;
 }
 
 const UI_LIST=[
@@ -814,41 +864,8 @@ const ENG_LIST=[
   {id:'ENG-OUT-001',w:0.5},{id:'ENG-OUT-002',w:0.2},{id:'ENG-OUT-003',w:0.2},
   {id:'ENG-SEC-001',w:0.2},{id:'ENG-SEC-002',w:0.2}
 ];
-
-async function autoClassify(){
-  const desc=document.getElementById('desc').value.trim();
-  if(!desc){alert('Nhập mô tả feature trước nhé!');return;}
-  const btn=document.getElementById('ai-btn');
-  btn.innerHTML='<span class="spinner"></span> Đang phân tích...';btn.disabled=true;
-  document.getElementById('ai-result').innerHTML='';
-  try{
-    const uiIds=UI_LIST.map(u=>`${u.id}=${u.w}`).join(',');
-    const engIds=ENG_LIST.map(e=>`${e.id}=${e.w}`).join(',');
-    const sys=`Bạn là chuyên gia Function Point theo chuẩn IFPUG và LG CNS CoE Simplified Method.
-Phân loại feature và trả về JSON hợp lệ duy nhất, không có markdown, không có text thêm.
-Format: {"fpType":"EI|EO|EQ|ILF|EIF","uiWeight":number,"uiId":"ID hoặc empty string","engWeight":number,"engId":"ID hoặc empty string","reasoning":"giải thích ngắn 1-2 câu tại sao chọn loại này","tip":"edge case hoặc empty string"}
-UI Factor IDs và weights: ${uiIds}
-Engine Factor IDs và weights: ${engIds}
-Rules: EI=create/update/delete/data loading; EO=output có tính toán/thống kê/biểu đồ; EQ=search/view/download/login/send; ILF=data table bên trong boundary; EIF=data từ hệ thống ngoài. Code data/temp files/attachment đơn lẻ không tính FP. Nếu không có UI hoặc Engine đặc biệt, trả 0 và empty string.`;
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:[{role:'user',content:desc}]})});
-    const data=await res.json();
-    const text=data.content.find(b=>b.type==='text')?.text||'';
-    const p=JSON.parse(text.replace(/```json|```/g,'').trim());
-    document.getElementById('fptype').value=p.fpType;
-    document.getElementById('ui1').value=String(p.uiWeight||0);
-    document.getElementById('eng1').value=String(p.engWeight||0);
-    updateCalc();
-    let html=`<div class="ai-box"><b>AI phân loại:</b> ${p.reasoning}`;
-    if(p.uiId)html+=`<br><span style="color:var(--text3)">UI Factor: ${p.uiId} (+${p.uiWeight})</span>`;
-    if(p.engId)html+=`<br><span style="color:var(--text3)">Engine Factor: ${p.engId} (+${p.engWeight})</span>`;
-    html+=`</div>`;
-    if(p.tip)html+=`<div class="tip-box">⚠ ${p.tip}</div>`;
-    document.getElementById('ai-result').innerHTML=html;
-  }catch(e){
-    document.getElementById('ai-result').innerHTML=`<div class="tip-box">Lỗi: ${e.message}. Vui lòng phân loại thủ công.</div>`;
-  }
-  btn.innerHTML='✦ Tự động phân loại bằng AI';btn.disabled=false;
-}
+document.getElementById('desc').addEventListener('input',checkCalcSave);
+document.getElementById('task-desc').addEventListener('input',checkTaskSave);
 </script>
 </body>
 </html>
