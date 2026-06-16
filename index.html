@@ -7,76 +7,45 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F7F5;
-  --surface:#FFFFFF;
-  --surface2:#F2F2EF;
-  --border:#E4E4DF;
-  --border2:#D0D0CA;
-  --text:#1A1A18;
-  --text2:#5A5A56;
-  --text3:#8A8A85;
-  --accent:#4A3FD4;
-  --accent-bg:#EEEDFE;
-  --accent-text:#3C3489;
-  --green:#0F6E56;
-  --green-bg:#E1F5EE;
-  --amber:#854F0B;
-  --amber-bg:#FAEEDA;
-  --red:#A32D2D;
-  --red-bg:#FCEBEB;
-  --blue:#185FA5;
-  --blue-bg:#E6F1FB;
-  --radius:8px;
-  --radius-lg:12px;
+  --bg:#F7F7F5;--surface:#FFFFFF;--surface2:#F2F2EF;--border:#E4E4DF;--border2:#D0D0CA;
+  --text:#1A1A18;--text2:#5A5A56;--text3:#8A8A85;
+  --accent:#4A3FD4;--accent-bg:#EEEDFE;--accent-text:#3C3489;
+  --green:#0F6E56;--green-bg:#E1F5EE;--amber:#854F0B;--amber-bg:#FAEEDA;
+  --red:#A32D2D;--red-bg:#FCEBEB;--blue:#185FA5;--blue-bg:#E6F1FB;
+  --radius:8px;--radius-lg:12px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
-
-/* Layout */
-.app{max-width:960px;margin:0 auto;padding:24px 16px 60px}
-.header{margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.app{max-width:980px;margin:0 auto;padding:24px 16px 60px}
+.header{margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
 .header h1{font-size:22px;font-weight:600;color:var(--text);margin-bottom:4px}
 .header p{color:var(--text2);font-size:13px}
-.tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--surface2);padding:4px;border-radius:var(--radius-lg);width:fit-content}
-.tab{padding:7px 16px;border-radius:8px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit;transition:all 0.15s}
+.tabs{display:flex;gap:2px;margin-bottom:24px;background:var(--surface2);padding:4px;border-radius:var(--radius-lg);flex-wrap:wrap}
+.tab{padding:7px 14px;border-radius:8px;border:none;background:none;font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit;transition:all 0.15s;white-space:nowrap}
 .tab.active{background:var(--surface);color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
 .tab:hover:not(.active){color:var(--text)}
-.panel{display:none}
-.panel.active{display:block}
-
-/* Cards */
+.panel{display:none}.panel.active{display:block}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
 .card-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px}
-
-/* Form */
 label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500}
 textarea,input,select{font-family:inherit;font-size:14px;width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);appearance:none;transition:border 0.15s}
 textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
 textarea{resize:vertical;min-height:72px}
 input[readonly]{background:var(--surface2);color:var(--text2)}
-
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .field{margin-bottom:14px}
-
-/* Buttons */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;font-family:inherit;transition:all 0.15s;font-weight:500}
-.btn:hover{background:var(--surface2);border-color:var(--border2)}
+.btn:hover{background:var(--surface2)}
 .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-primary:hover{background:#3832B0;border-color:#3832B0}
 .btn-full{width:100%;justify-content:center}
 .btn-sm{padding:6px 12px;font-size:12px}
-
-/* Result */
-.result-hero{background:var(--accent-bg);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between}
+.result-hero{background:var(--accent-bg);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
 .result-fp{font-size:40px;font-weight:700;color:var(--accent)}
-.result-fp-label{font-size:12px;color:var(--accent-text);margin-top:2px}
 .formula-box{font-size:13px;color:var(--accent-text);background:#fff;border-radius:var(--radius);padding:8px 14px;font-family:'SF Mono','Fira Code',monospace;margin-top:12px}
-.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
 .metric{background:var(--surface2);border-radius:var(--radius);padding:12px 14px}
 .metric-val{font-size:18px;font-weight:600;color:var(--text)}
 .metric-lbl{font-size:11px;color:var(--text3);margin-top:2px}
-
-/* Badge */
 .badge{display:inline-flex;align-items:center;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:600}
 .badge-EI{background:var(--blue-bg);color:var(--blue)}
 .badge-EO{background:var(--accent-bg);color:var(--accent-text)}
@@ -84,13 +53,9 @@ input[readonly]{background:var(--surface2);color:var(--text2)}
 .badge-ILF{background:var(--amber-bg);color:var(--amber)}
 .badge-EIF{background:#FAECE7;color:#712B13}
 .badge-TASK{background:var(--surface2);color:var(--text2)}
-
-/* AI box */
 .ai-box{background:var(--surface2);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--text2);border-left:3px solid var(--accent)}
 .ai-box b{color:var(--text)}
 .tip-box{background:var(--amber-bg);border-radius:var(--radius);padding:10px 14px;font-size:12px;color:var(--amber);margin-top:10px;border-left:3px solid #EF9F27}
-
-/* Table */
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;padding:8px 10px;border-bottom:1px solid var(--border)}
 td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
@@ -98,72 +63,81 @@ td:first-child{color:var(--text);font-weight:500}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:var(--surface2)}
 .mono{font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:var(--text2)}
-
-/* History */
 .history-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface)}
 .history-item:hover{background:var(--surface2)}
 .history-desc{font-size:13px;color:var(--text);max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .history-fp{font-size:16px;font-weight:600;color:var(--accent)}
 .history-meta{font-size:11px;color:var(--text3);margin-top:2px}
-
-/* Divider */
 hr{border:none;border-top:1px solid var(--border);margin:16px 0}
-
-/* Select with arrow */
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238A8A85' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
-
-/* Responsive */
-@media(max-width:600px){
-  .grid2,.grid3{grid-template-columns:1fr}
-  .metric-grid{grid-template-columns:1fr 1fr}
-  .result-hero{flex-direction:column;align-items:flex-start;gap:12px}
-}
-
-/* Loading spinner */
+@media(max-width:600px){.grid2{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr 1fr}.result-hero{flex-direction:column;align-items:flex-start;gap:12px}.tabs{gap:2px}}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Empty state */
 .empty{text-align:center;padding:40px 20px;color:var(--text3)}
 .empty-icon{font-size:32px;margin-bottom:10px}
-
-/* Totals bar */
 .totals-bar{background:var(--accent);color:#fff;border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .totals-bar .t-label{font-size:12px;opacity:0.8}
 .totals-bar .t-val{font-size:20px;font-weight:700}
-
-/* Category section in reference */
 .ref-section{margin-bottom:24px}
 .ref-section h3{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-
-/* Complexity table */
 .complexity-table th,.complexity-table td{font-size:12px;padding:6px 8px}
-.low{color:var(--green);font-weight:600}
-.usually{color:var(--amber);font-weight:600}
-.high{color:var(--red);font-weight:600}
-
-.note{font-size:12px;color:var(--text3);margin-top:6px;padding:8px 12px;background:var(--surface2);border-radius:var(--radius)}
+.low{color:var(--green);font-weight:600}.usually{color:var(--amber);font-weight:600}.high{color:var(--red);font-weight:600}
+.note{font-size:12px;color:var(--text3);margin-top:8px;padding:8px 12px;background:var(--surface2);border-radius:var(--radius)}
+.flow{display:flex;align-items:center;gap:0;margin:16px 0;flex-wrap:wrap}
+.flow-step{background:var(--accent-bg);border:1.5px solid var(--accent);border-radius:var(--radius);padding:10px 14px;font-size:12px;font-weight:600;color:var(--accent-text);text-align:center;min-width:110px;flex:1}
+.flow-step .step-num{font-size:10px;color:var(--accent);display:block;margin-bottom:2px;font-weight:700}
+.flow-arrow{color:var(--text3);font-size:18px;padding:0 6px;flex-shrink:0}
+.flow-sub{font-size:11px;color:var(--accent-text);display:block;font-weight:400;margin-top:2px}
+.boundary-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;margin:16px 0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.boundary-inside{background:var(--blue-bg);padding:16px;border-right:2px dashed var(--accent)}
+.boundary-outside{background:var(--surface2);padding:16px}
+.boundary-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.boundary-inside .boundary-label{color:var(--blue)}
+.boundary-outside .boundary-label{color:var(--text3)}
+.boundary-divider{background:var(--accent);width:3px;align-self:stretch;display:flex;align-items:center;justify-content:center}
+.boundary-divider span{background:var(--accent);color:#fff;font-size:9px;font-weight:700;padding:4px 2px;writing-mode:vertical-rl;white-space:nowrap;letter-spacing:0.05em}
+.boundary-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);margin-bottom:4px}
+.boundary-item:last-child{margin-bottom:0}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-ILF{background:var(--blue)}.dot-EIF{background:#D15B2A}.dot-EI{background:var(--accent)}.dot-EO{background:var(--green)}.dot-EQ{background:var(--amber)}
+.criteria-list{counter-reset:c}
+.criteria-item{counter-increment:c;display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.criteria-item:last-child{border-bottom:none}
+.criteria-num{background:var(--accent);color:#fff;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.criteria-body h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.criteria-body p{font-size:12px;color:var(--text2);line-height:1.5}
+.criteria-body .ex{font-size:12px;color:var(--text3);margin-top:4px;font-style:italic}
+.asis-tobe{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.asis-box{border:1.5px solid var(--border2);border-radius:var(--radius);padding:14px}
+.asis-box.asis{border-color:#D15B2A;background:#FFF8F6}
+.asis-box.tobe{border-color:var(--accent);background:var(--accent-bg)}
+.asis-box h4{font-size:12px;font-weight:700;margin-bottom:8px}
+.asis-box.asis h4{color:#D15B2A}
+.asis-box.tobe h4{color:var(--accent)}
+.asis-box ul{font-size:12px;color:var(--text2);padding-left:16px;line-height:1.8}
+.asis-box .condition{font-size:11px;background:rgba(0,0,0,0.06);border-radius:4px;padding:2px 8px;display:inline-block;margin-top:6px}
+@media(max-width:600px){.asis-tobe{grid-template-columns:1fr}.flow-step{min-width:80px;font-size:11px}.boundary-wrap{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
 
 <div class="header">
-  <h1>Function Point Calculator</h1>
-  <p>Simplified Method &nbsp;·&nbsp; 1 FP = 4.85 giờ công</p>
+  <h1>CoE Function Point Calculator</h1>
+  <p>LG CNS Solution CoE — Simplified Method &nbsp;·&nbsp; 1 FP = 4.85 giờ công</p>
 </div>
 
 <div class="tabs">
   <button class="tab active" onclick="switchTab('calc')">Tính FP</button>
   <button class="tab" onclick="switchTab('task')">Task → FP</button>
   <button class="tab" onclick="switchTab('history')">Lịch sử</button>
+  <button class="tab" onclick="switchTab('process')">Quy trình</button>
   <button class="tab" onclick="switchTab('ref')">Tra cứu</button>
   <button class="tab" onclick="switchTab('tips')">Tips & Tricks</button>
 </div>
 
-<!-- ==================== TAB: CALC ==================== -->
+<!-- ===== TAB: CALC ===== -->
 <div id="panel-calc" class="panel active">
-
   <div class="card">
     <div class="card-title">Mô tả feature</div>
     <div class="field">
@@ -180,7 +154,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <select id="fptype" onchange="updateCalc()">
           <option value="">— chọn loại —</option>
           <option value="EI">EI — External Input (Create/Update/Delete)</option>
-          <option value="EO">EO — External Output (có tính toán / chart)</option>
+          <option value="EO">EO — External Output (tính toán / chart)</option>
           <option value="EQ">EQ — External Query (search / view / login)</option>
           <option value="ILF">ILF — Internal Logic File</option>
           <option value="EIF">EIF — External Interface File</option>
@@ -191,7 +165,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <input id="basefp" type="text" readonly placeholder="—">
       </div>
     </div>
-
     <div class="field">
       <label>UI Factor</label>
       <select id="ui1" onchange="updateCalc()">
@@ -202,45 +175,100 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <option value="0.23">Tabbed navigation — LAYOUT-TAB-001 (+0.23)</option>
         </optgroup>
         <optgroup label="Tables">
-          <option value="0.5">Editable table (in-place edit) — TABLE-EDITABLE-001 (+0.5)</option>
-          <option value="0.3">Infinite scroll table — TABLE-INFSCROLL-001 (+0.3)</option>
-          <option value="0.45">Column/Row pinning — TABLE-PINNING-001 (+0.45)</option>
+          <option value="0.5">Content editable table — TABLE-EDITABLE-001 (+0.5)</option>
+          <option value="0.3">Infinite Scroll Table — TABLE-INFSCROLL-001 (+0.3)</option>
+          <option value="0.45">Column/Row Pinning — TABLE-PINNING-001 (+0.45)</option>
           <option value="0.6">Drag-drop rows/columns — TABLE-DRAGDROP-001 (+0.6)</option>
           <option value="0.45">Tree-structured table — TABLE-TREE-001 (+0.45)</option>
         </optgroup>
         <optgroup label="Tree">
-          <option value="0.7">Tree view (expand/collapse) — TREE-TREE-001 (+0.7)</option>
-          <option value="0.5">Drag-drop tree nodes — TREE-DRAGDROP-001 (+0.5)</option>
+          <option value="0.7">Tree-structured view — TREE-TREE-001 (+0.7)</option>
+          <option value="0.5">Drag-drop move/reorder nodes — TREE-DRAGDROP-001 (+0.5)</option>
+          <option value="0.3">Lazy load children on expand — TREE-LAZEXPAND-001 (+0.3)</option>
+          <option value="0.5">Multi-select/search nodes — TREE-MULTI-001 (+0.5)</option>
         </optgroup>
-        <optgroup label="Chart / Calendar / Export">
-          <option value="0.3">Real-time chart/dashboard — CHART-REALTIME-001 (+0.3)</option>
-          <option value="0.38">Gantt chart — CALENDAR-GANTT-001 (+0.38)</option>
-          <option value="0.7">Export by template (PDF/Excel) — EXPORT-BY-TEMP001 (+0.7)</option>
-          <option value="0.4">Drag-drop board (Kanban) — DRAGDROP-BOARD-001 (+0.4)</option>
+        <optgroup label="Dialogs & Overlays">
+          <option value="0.15">Popup/Modal/Dialog — DIALOG-POPUP-001 (+0.15)</option>
+          <option value="0.2">Side panel / Drawer — DIALOG-PANEL-001 (+0.2)</option>
+        </optgroup>
+        <optgroup label="Charts">
+          <option value="0.3">Interactive charts — CHART-INTER-001 (+0.3)</option>
+          <option value="0.3">Real-time updates chart — CHART-REALTIME-001 (+0.3)</option>
+        </optgroup>
+        <optgroup label="Drag & Drop">
+          <option value="0.4">Drag & Drop List Reordering — DRAGDROP-REORDER-001 (+0.4)</option>
+          <option value="0.4">Drag & Drop Board (Kanban) — DRAGDROP-BOARD-001 (+0.4)</option>
+          <option value="0.35">Drag & Drop Tree Nodes — DRAGDROP-TREE-001 (+0.35)</option>
+          <option value="0.35">Drag to Create/Resize (calendar) — DRAGDROP-RESIZE-001 (+0.35)</option>
+        </optgroup>
+        <optgroup label="Flows">
+          <option value="0.25">Stepper / Multi-step wizard — FLOWS-STEP-001 (+0.25)</option>
+          <option value="1.0">Flow-base programming editor — FLOWS-BASED-001 (+1.0)</option>
+        </optgroup>
+        <optgroup label="Calendar & Timeline">
+          <option value="0.5">Static Calendar — CALENDAR-STATIC-001 (+0.5)</option>
+          <option value="0.5">Interactive Calendar — CALENDAR-INTERACTIVE-001 (+0.5)</option>
+          <option value="0.38">Gantt Chart — CALENDAR-GANTT-001 (+0.38)</option>
+        </optgroup>
+        <optgroup label="Map">
+          <option value="0.5">Static Map — MAP-STATIC-001 (+0.5)</option>
+          <option value="1.0">Interactive Map — MAP-INTERACTIVE-001 (+1.0)</option>
+        </optgroup>
+        <optgroup label="Forms / Editor / Streaming">
+          <option value="0.2">Dynamic form — FORMS-DYNAMIC-001 (+0.2)</option>
+          <option value="0.5">Text Editor (WYSIWYG/Markdown) — EDITOR-TEXT-001 (+0.5)</option>
+          <option value="1.0">Video/Audio Streaming — STREAM-VIDAUD-001 (+1.0)</option>
+          <option value="0.5">File Streaming — STREAM-FILES-001 (+0.5)</option>
+        </optgroup>
+        <optgroup label="Exports">
+          <option value="0.7">Static Template export (PDF/Excel/Word) — EXPORT-BY-TEMP001 (+0.7)</option>
         </optgroup>
       </select>
     </div>
-
     <div class="field">
       <label>Engine Factor</label>
       <select id="eng1" onchange="updateCalc()">
         <option value="0">Không có engine đặc biệt (+0)</option>
-        <optgroup label="Integration">
-          <option value="0.5">API Aggregator (nhiều API song song) — ENG-INT-001 (+0.5)</option>
+        <optgroup label="Integration Engine">
+          <option value="0.5">API Aggregator — ENG-INT-001 (+0.5)</option>
         </optgroup>
-        <optgroup label="Rule & Decision">
-          <option value="0.5">Score Calculator (công thức, biến số) — ENG-RUL-001 (+0.5)</option>
-          <option value="0.5">Cross-System Rule (check nhiều DB/service) — ENG-RUL-002 (+0.5)</option>
-          <option value="0.2">Rule Pipeline (nhiều rule nối tiếp) — ENG-RUL-003 (+0.2)</option>
-          <option value="0.2">Rule Context Passing (output → input) — ENG-RUL-004 (+0.2)</option>
+        <optgroup label="Rule & Decision Engine">
+          <option value="0.5">Score Calculator — ENG-RUL-001 (+0.5)</option>
+          <option value="0.5">Cross-System Rule — ENG-RUL-002 (+0.5)</option>
+          <option value="0.2">Rule Pipeline — ENG-RUL-003 (+0.2)</option>
+          <option value="0.2">Rule Context Passing — ENG-RUL-004 (+0.2)</option>
         </optgroup>
-        <optgroup label="Workflow">
-          <option value="0.5">Dynamic Router (routing theo state) — ENG-WKF-001 (+0.5)</option>
-          <option value="0.2">State Checkpoint (lưu state để resume) — ENG-WKF-002 (+0.2)</option>
-          <option value="0.5">DAG Scheduler (job dependency) — ENG-WKF-003 (+0.5)</option>
+        <optgroup label="Workflow & Orchestration">
+          <option value="0.5">Dynamic Router — ENG-WKF-001 (+0.5)</option>
+          <option value="0.2">State Checkpoint — ENG-WKF-002 (+0.2)</option>
+          <option value="0.5">DAG Scheduler — ENG-WKF-003 (+0.5)</option>
+          <option value="0.2">Distributed Tracker — ENG-WKF-004 (+0.2)</option>
+          <option value="0.5">Rollback Executor — ENG-WKF-005 (+0.5)</option>
         </optgroup>
-        <optgroup label="Output">
-          <option value="0.5">Report/Export Engine (derived data) — ENG-OUT-001 (+0.5)</option>
+        <optgroup label="Data & Streaming Engine">
+          <option value="0.2">Event Aggregator — ENG-STR-001 (+0.2)</option>
+          <option value="0.2">Pattern Matcher — ENG-STR-002 (+0.2)</option>
+        </optgroup>
+        <optgroup label="Data & AI Engine">
+          <option value="0.2">Feature Profiler — ENG-DAI-001 (+0.2)</option>
+          <option value="0.2">Outlier Detector — ENG-DAI-002 (+0.2)</option>
+          <option value="0.2">Fuzzy Search — ENG-DAI-003 (+0.2)</option>
+          <option value="0.2">Record Merger — ENG-DAI-004 (+0.2)</option>
+          <option value="0.2">Context Profiler — ENG-DAI-005 (+0.2)</option>
+          <option value="0.2">Item Ranker — ENG-DAI-006 (+0.2)</option>
+          <option value="0.2">Vector Search — ENG-DAI-007 (+0.2)</option>
+          <option value="0.2">Prompt Builder — ENG-DAI-008 (+0.2)</option>
+          <option value="0.2">LLM Parser — ENG-DAI-009 (+0.2)</option>
+          <option value="0.5">Faceted Search — ENG-DAI-010 (+0.5)</option>
+        </optgroup>
+        <optgroup label="Presentation & Output">
+          <option value="0.5">Document Generator — ENG-OUT-001 (+0.5)</option>
+          <option value="0.2">Client Profiler — ENG-OUT-002 (+0.2)</option>
+          <option value="0.2">UI Schema Builder — ENG-OUT-003 (+0.2)</option>
+        </optgroup>
+        <optgroup label="Resilience & Security">
+          <option value="0.2">DLQ Handler — ENG-SEC-001 (+0.2)</option>
+          <option value="0.2">Policy Evaluator — ENG-SEC-002 (+0.2)</option>
         </optgroup>
       </select>
     </div>
@@ -253,43 +281,24 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <div class="result-fp" id="total-fp">—</div>
         <div id="fp-badge" style="margin-top:8px"></div>
       </div>
-      <div id="result-right" style="text-align:right"></div>
     </div>
     <div class="formula-box" id="formula-text"></div>
     <div class="metric-grid" style="margin-top:12px">
-      <div class="metric">
-        <div class="metric-val" id="m-hours">—</div>
-        <div class="metric-lbl">Giờ công (× 4.85h)</div>
-      </div>
-      <div class="metric">
-        <div class="metric-val" id="m-md">—</div>
-        <div class="metric-lbl">Man-day (8h/ngày)</div>
-      </div>
-      <div class="metric">
-        <div class="metric-val" id="m-base">—</div>
-        <div class="metric-lbl">Base FP (chưa factor)</div>
-      </div>
+      <div class="metric"><div class="metric-val" id="m-hours">—</div><div class="metric-lbl">Giờ công (× 4.85h)</div></div>
+      <div class="metric"><div class="metric-val" id="m-md">—</div><div class="metric-lbl">Man-day (8h/ngày)</div></div>
+      <div class="metric"><div class="metric-val" id="m-base">—</div><div class="metric-lbl">Base FP (chưa factor)</div></div>
     </div>
-    <button class="btn btn-full" style="margin-top:12px" onclick="saveToHistory()">+ Lưu vào lịch sử</button>
+    <button class="btn btn-full" style="margin-top:4px" onclick="saveToHistory()">+ Lưu vào lịch sử</button>
   </div>
-
 </div>
 
-<!-- ==================== TAB: TASK ==================== -->
+<!-- ===== TAB: TASK ===== -->
 <div id="panel-task" class="panel">
   <div class="card">
-    <div class="card-title">Quy đổi Task/Research/Meeting → FP</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Áp dụng cho: Task, Management, BrSE, Research, Testing, Self-Study... Nguyên tắc: làm tròn lên.</p>
-
-    <div class="field">
-      <label>Mô tả task</label>
-      <input type="text" id="task-desc" placeholder="VD: Research và viết tài liệu QA training">
-    </div>
-    <div class="field">
-      <label>Thời gian thực tế (giờ)</label>
-      <input type="number" id="task-hours" min="0" max="8" step="0.5" placeholder="VD: 3" oninput="calcTask()">
-    </div>
-
+    <div class="card-title">Quy đổi Task / Research / Meeting → FP</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Áp dụng cho: Task, Management, BrSE, Research, Testing, Self-Study... Nguyên tắc: <b>làm tròn lên</b>.</p>
+    <div class="field"><label>Mô tả task</label><input type="text" id="task-desc" placeholder="VD: Research và viết tài liệu QA training"></div>
+    <div class="field"><label>Thời gian thực tế (giờ)</label><input type="number" id="task-hours" min="0" max="8" step="0.5" placeholder="VD: 3" oninput="calcTask()"></div>
     <div id="task-result" style="display:none;margin-top:16px">
       <div class="result-hero">
         <div>
@@ -297,16 +306,13 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <div class="result-fp" id="task-fp">—</div>
           <span class="badge badge-TASK" style="margin-top:8px">TASK</span>
         </div>
-        <div style="text-align:right">
-          <div class="metric" style="display:inline-block;min-width:100px">
-            <div class="metric-val" id="task-md">—</div>
-            <div class="metric-lbl">Man-day</div>
-          </div>
+        <div class="metric" style="min-width:110px">
+          <div class="metric-val" id="task-md">—</div>
+          <div class="metric-lbl">Man-day</div>
         </div>
       </div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">Bảng quy đổi chuẩn</div>
     <table>
@@ -323,7 +329,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   </div>
 </div>
 
-<!-- ==================== TAB: HISTORY ==================== -->
+<!-- ===== TAB: HISTORY ===== -->
 <div id="panel-history" class="panel">
   <div id="totals-area" style="display:none">
     <div class="totals-bar">
@@ -339,9 +345,130 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <div id="history-list"><div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div></div>
 </div>
 
-<!-- ==================== TAB: REFERENCE ==================== -->
-<div id="panel-ref" class="panel">
+<!-- ===== TAB: PROCESS ===== -->
+<div id="panel-process" class="panel">
+  <div class="card">
+    <div class="card-title">Quy trình tính Function Point — 5 bước</div>
+    <div class="flow">
+      <div class="flow-step"><span class="step-num">BƯỚC 1</span>Measurement Type<span class="flow-sub">Development / Enhancement / Application</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="step-num">BƯỚC 2</span>Xác định Boundary<span class="flow-sub">Phạm vi đo & ranh giới app</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="step-num">BƯỚC 3</span>Tính Data FP<span class="flow-sub">ILF, EIF</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="step-num">BƯỚC 4</span>Tính Transaction FP<span class="flow-sub">EI, EO, EQ</span></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="step-num">BƯỚC 5</span>Áp dụng CoE Factor<span class="flow-sub">UI + Engine → Total FP</span></div>
+    </div>
+    <div class="note">Công thức: <b>Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</b></div>
+  </div>
 
+  <div class="card">
+    <div class="card-title">Bước 1 — Measurement Type</div>
+    <table>
+      <thead><tr><th>Loại</th><th>Khi nào dùng</th></tr></thead>
+      <tbody>
+        <tr><td>Development Project</td><td>Đo size của phần mềm mới đang được phát triển</td></tr>
+        <tr><td>Enhancement Project</td><td>Đo size các thay đổi (add/modify/delete) trên app đã có</td></tr>
+        <tr><td>Application Baseline</td><td>Đo toàn bộ size của app đang vận hành (maintenance)</td></tr>
+      </tbody>
+    </table>
+    <div class="note">Tại LG CNS CoE: thông thường dùng <b>Development Project</b> cho các story/feature mới trong sprint.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bước 2 — Application Boundary</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Ranh giới logic giữa hệ thống đang đo và bên ngoài. Phải thống nhất với khách hàng trước khi tính FP.</p>
+    <div class="boundary-wrap">
+      <div class="boundary-inside">
+        <div class="boundary-label">Bên trong boundary</div>
+        <div class="boundary-item"><span class="dot dot-ILF"></span>ILF — data app tự quản lý</div>
+        <div class="boundary-item"><span class="dot dot-EI"></span>EI — hành động đi vào app</div>
+        <div class="boundary-item"><span class="dot dot-EO"></span>EO — output có tính toán</div>
+        <div class="boundary-item"><span class="dot dot-EQ"></span>EQ — query/hiển thị đơn thuần</div>
+      </div>
+      <div class="boundary-divider"><span>BOUNDARY</span></div>
+      <div class="boundary-outside">
+        <div class="boundary-label">Bên ngoài boundary</div>
+        <div class="boundary-item"><span class="dot dot-EIF"></span>EIF — data từ hệ thống ngoài</div>
+        <div class="boundary-item"><span class="dot" style="background:var(--text3)"></span>User / External system</div>
+        <div class="boundary-item"><span class="dot" style="background:var(--text3)"></span>Payment Gateway</div>
+        <div class="boundary-item"><span class="dot" style="background:var(--text3)"></span>Shipping API, ERP...</div>
+      </div>
+    </div>
+    <div class="ref-section" style="margin-top:16px">
+      <h3>Ví dụ E-commerce</h3>
+      <table>
+        <thead><tr><th>Component</th><th>FP Type</th><th>Lý do</th></tr></thead>
+        <tbody>
+          <tr><td>Order / Customer / Product / Cart DB</td><td><span class="badge badge-ILF">ILF</span></td><td>App tự quản lý, bên trong boundary</td></tr>
+          <tr><td>Payment Gateway / Shipping API / ERP Master</td><td><span class="badge badge-EIF">EIF</span></td><td>Hệ thống ngoài, app chỉ đọc/gọi</td></tr>
+          <tr><td>Create Order / Update Product / Delete Cart</td><td><span class="badge badge-EI">EI</span></td><td>Tạo/sửa/xóa data trong ILF</td></tr>
+          <tr><td>Search Product / View Detail / Login</td><td><span class="badge badge-EQ">EQ</span></td><td>Chỉ query, không tính toán</td></tr>
+          <tr><td>Revenue Report / Sales Dashboard</td><td><span class="badge badge-EO">EO</span></td><td>Có tính toán, thống kê, biểu đồ</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bước 3 & 4 — Unit Process Criteria</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Một hành động phải thỏa mãn <b>đủ 3 tiêu chí</b> thì mới được tính là 1 unit process:</p>
+    <div class="criteria-list">
+      <div class="criteria-item">
+        <div class="criteria-num">1</div>
+        <div class="criteria-body">
+          <h4>Meaningful to the user</h4>
+          <p>Feature phải xuất phát từ yêu cầu người dùng thực sự, không phải xử lý kỹ thuật nội bộ.</p>
+          <p class="ex">VD: "Đăng ký nhân viên mới" là meaningful. "Tạo UUID cho record" thì không.</p>
+        </div>
+      </div>
+      <div class="criteria-item">
+        <div class="criteria-num">2</div>
+        <div class="criteria-body">
+          <h4>Complete transaction</h4>
+          <p>Phải bao gồm tất cả thông tin cần thiết để hoàn thành giao dịch. Không thể tách rời.</p>
+          <p class="ex">VD: Đăng ký nhân viên phải bao gồm cả lương và người phụ thuộc (nếu có). Thiếu → không complete.</p>
+        </div>
+      </div>
+      <div class="criteria-item">
+        <div class="criteria-num">3</div>
+        <div class="criteria-body">
+          <h4>Maintain business consistency</h4>
+          <p>Sau khi thực hiện, dữ liệu phải ở trạng thái nhất quán về mặt nghiệp vụ.</p>
+          <p class="ex">VD: Nhập thiếu địa chỉ và lương khi đăng ký nhân viên → business inconsistency → không tính là 1 unit process.</p>
+        </div>
+      </div>
+    </div>
+    <div class="note">⚠ Attachment đơn lẻ, code data (lookup table), temporary files → KHÔNG đủ tiêu chí → KHÔNG tính FP.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Bước 5 — Nhập FP vào hệ thống (AS IS vs TO BE)</div>
+    <div class="asis-tobe">
+      <div class="asis-box asis">
+        <h4>AS IS — Story cũ</h4>
+        <ul>
+          <li><b>PLAN:</b> Nhập tổng effort MD (Analysis → Design → Dev)</li>
+          <li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li>
+        </ul>
+        <span class="condition">Điều kiện: Plan ≤ 5 MD / story</span>
+      </div>
+      <div class="asis-box tobe">
+        <h4>TO BE — Story mới</h4>
+        <ul>
+          <li><b>PLAN:</b> Nhập Function Points (FP) thay vì MD</li>
+          <li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li>
+        </ul>
+        <span class="condition" style="background:rgba(74,63,212,0.1);color:var(--accent)">Đơn vị: FP</span>
+      </div>
+    </div>
+    <div class="note">Ref: <b>[GSU] Solution CoE FP Calculation V1.1.xlsm</b> &nbsp;·&nbsp; Checklist: <b>KRSTD-CK-07 — WIRE-Wiki</b></div>
+  </div>
+</div>
+
+<!-- ===== TAB: REF ===== -->
+<div id="panel-ref" class="panel">
   <div class="card">
     <div class="card-title">Base FP theo loại</div>
     <table>
@@ -354,54 +481,89 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <tr><td><span class="badge badge-EQ">EQ</span></td><td>External Query</td><td><b>3.9</b></td><td>Transaction</td></tr>
       </tbody>
     </table>
-    <div class="note">Công thức: Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</div>
+    <div class="note">Công thức: <b>Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</b></div>
   </div>
 
   <div class="card">
-    <div class="card-title">UI Factor — danh sách đầy đủ</div>
+    <div class="card-title">UI Factor — danh sách đầy đủ (32 patterns)</div>
     <table>
-      <thead><tr><th>Category</th><th>Pattern</th><th>ID</th><th>Weight</th></tr></thead>
+      <thead><tr><th>#</th><th>Category</th><th>Pattern</th><th>ID</th><th>Weight</th></tr></thead>
       <tbody>
-        <tr><td>Layout</td><td>Block list / Card layout</td><td class="mono">LAYOUT-BLOCK-001</td><td><b>0.20</b></td></tr>
-        <tr><td>Layout</td><td>Master-Detail (2 panel)</td><td class="mono">LAYOUT-MASTER-001</td><td><b>0.40</b></td></tr>
-        <tr><td>Layout</td><td>Tabbed navigation</td><td class="mono">LAYOUT-TAB-001</td><td><b>0.23</b></td></tr>
-        <tr><td>Tables</td><td>Content editable table</td><td class="mono">TABLE-EDITABLE-001</td><td><b>0.50</b></td></tr>
-        <tr><td>Tables</td><td>Infinite scroll table</td><td class="mono">TABLE-INFSCROLL-001</td><td><b>0.30</b></td></tr>
-        <tr><td>Tables</td><td>Column/Row pinning</td><td class="mono">TABLE-PINNING-001</td><td><b>0.45</b></td></tr>
-        <tr><td>Tables</td><td>Drag-drop rows/columns</td><td class="mono">TABLE-DRAGDROP-001</td><td><b>0.60</b></td></tr>
-        <tr><td>Tables</td><td>Tree-structured table</td><td class="mono">TABLE-TREE-001</td><td><b>0.45</b></td></tr>
-        <tr><td>Tree</td><td>Tree view (expand/collapse)</td><td class="mono">TREE-TREE-001</td><td><b>0.70</b></td></tr>
-        <tr><td>Tree</td><td>Drag-drop tree nodes</td><td class="mono">TREE-DRAGDROP-001</td><td><b>0.50</b></td></tr>
-        <tr><td>Chart</td><td>Real-time chart/dashboard</td><td class="mono">CHART-REALTIME-001</td><td><b>0.30</b></td></tr>
-        <tr><td>Calendar</td><td>Gantt chart</td><td class="mono">CALENDAR-GANTT-001</td><td><b>0.38</b></td></tr>
-        <tr><td>Export</td><td>Export by template (PDF/Excel)</td><td class="mono">EXPORT-BY-TEMP001</td><td><b>0.70</b></td></tr>
-        <tr><td>Interaction</td><td>Drag-drop board (Kanban)</td><td class="mono">DRAGDROP-BOARD-001</td><td><b>0.40</b></td></tr>
+        <tr><td>1</td><td>Layout</td><td>Block list</td><td class="mono">LAYOUT-BLOCK-001</td><td><b>0.2</b></td></tr>
+        <tr><td>2</td><td>Layout</td><td>Master-Detail</td><td class="mono">LAYOUT-MASTER-001</td><td><b>0.4</b></td></tr>
+        <tr><td>3</td><td>Layout</td><td>Tabbed</td><td class="mono">LAYOUT-TAB-001</td><td><b>0.23</b></td></tr>
+        <tr><td>4</td><td>Tables</td><td>Content editable table</td><td class="mono">TABLE-EDITABLE-001</td><td><b>0.5</b></td></tr>
+        <tr><td>5</td><td>Tables</td><td>Infinite Scroll Table</td><td class="mono">TABLE-INFSCROLL-001</td><td><b>0.3</b></td></tr>
+        <tr><td>6</td><td>Tables</td><td>Column/Row Pinning</td><td class="mono">TABLE-PINNING-001</td><td><b>0.45</b></td></tr>
+        <tr><td>7</td><td>Tables</td><td>Drag-and-drop rows/columns</td><td class="mono">TABLE-DRAGDROP-001</td><td><b>0.6</b></td></tr>
+        <tr><td>8</td><td>Tables</td><td>Tree-structured table</td><td class="mono">TABLE-TREE-001</td><td><b>0.45</b></td></tr>
+        <tr><td>9</td><td>Tree</td><td>Tree-structured</td><td class="mono">TREE-TREE-001</td><td><b>0.7</b></td></tr>
+        <tr><td>10</td><td>Tree</td><td>Drag-and-drop move/reorder nodes</td><td class="mono">TREE-DRAGDROP-001</td><td><b>0.5</b></td></tr>
+        <tr><td>11</td><td>Tree</td><td>Lazy load children on expand</td><td class="mono">TREE-LAZEXPAND-001</td><td><b>0.3</b></td></tr>
+        <tr><td>12</td><td>Tree</td><td>Multi-select/search nodes on trees</td><td class="mono">TREE-MULTI-001</td><td><b>0.5</b></td></tr>
+        <tr><td>13</td><td>Dialogs & Overlays</td><td>Popup/Modal/Dialog</td><td class="mono">DIALOG-POPUP-001</td><td><b>0.15</b></td></tr>
+        <tr><td>14</td><td>Dialogs & Overlays</td><td>Side panel / Drawer</td><td class="mono">DIALOG-PANEL-001</td><td><b>0.2</b></td></tr>
+        <tr><td>15</td><td>Charts</td><td>Interactive charts</td><td class="mono">CHART-INTER-001</td><td><b>0.3</b></td></tr>
+        <tr><td>16</td><td>Charts</td><td>Real-time updates</td><td class="mono">CHART-REALTIME-001</td><td><b>0.3</b></td></tr>
+        <tr><td>17</td><td>Drag & Drop</td><td>Drag & Drop List Reordering</td><td class="mono">DRAGDROP-REORDER-001</td><td><b>0.4</b></td></tr>
+        <tr><td>18</td><td>Drag & Drop</td><td>Drag & Drop Board (Kanban)</td><td class="mono">DRAGDROP-BOARD-001</td><td><b>0.4</b></td></tr>
+        <tr><td>19</td><td>Drag & Drop</td><td>Drag & Drop Tree Nodes</td><td class="mono">DRAGDROP-TREE-001</td><td><b>0.35</b></td></tr>
+        <tr><td>20</td><td>Drag & Drop</td><td>Drag to Create/Resize (calendar/timeline)</td><td class="mono">DRAGDROP-RESIZE-001</td><td><b>0.35</b></td></tr>
+        <tr><td>21</td><td>Flows</td><td>Stepper / Multi-step wizard</td><td class="mono">FLOWS-STEP-001</td><td><b>0.25</b></td></tr>
+        <tr><td>22</td><td>Flows</td><td>Flow-base programming editor</td><td class="mono">FLOWS-BASED-001</td><td><b>1.0</b></td></tr>
+        <tr><td>23</td><td>Calendar & Timeline</td><td>Static Calendar</td><td class="mono">CALENDAR-STATIC-001</td><td><b>0.5</b></td></tr>
+        <tr><td>24</td><td>Calendar & Timeline</td><td>Interactive Calendar</td><td class="mono">CALENDAR-INTERACTIVE-001</td><td><b>0.5</b></td></tr>
+        <tr><td>25</td><td>Calendar & Timeline</td><td>Gantt Chart</td><td class="mono">CALENDAR-GANTT-001</td><td><b>0.38</b></td></tr>
+        <tr><td>26</td><td>Map</td><td>Static Map</td><td class="mono">MAP-STATIC-001</td><td><b>0.5</b></td></tr>
+        <tr><td>27</td><td>Map</td><td>Interactive Map</td><td class="mono">MAP-INTERACTIVE-001</td><td><b>1.0</b></td></tr>
+        <tr><td>28</td><td>Forms</td><td>Dynamic form</td><td class="mono">FORMS-DYNAMIC-001</td><td><b>0.2</b></td></tr>
+        <tr><td>29</td><td>Editor</td><td>Text Editor (WYSIWYG/Markdown)</td><td class="mono">EDITOR-TEXT-001</td><td><b>0.5</b></td></tr>
+        <tr><td>30</td><td>Streaming</td><td>Video/Audio Streaming</td><td class="mono">STREAM-VIDAUD-001</td><td><b>1.0</b></td></tr>
+        <tr><td>31</td><td>Streaming</td><td>File Streaming</td><td class="mono">STREAM-FILES-001</td><td><b>0.5</b></td></tr>
+        <tr><td>32</td><td>Exports</td><td>Static Template export (PDF/Excel/Word)</td><td class="mono">EXPORT-BY-TEMP001</td><td><b>0.7</b></td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="card-title">Engine Factor — danh sách đầy đủ</div>
+    <div class="card-title">Engine Factor — danh sách đầy đủ (27 patterns)</div>
     <table>
-      <thead><tr><th>Group</th><th>Pattern</th><th>ID</th><th>Weight</th></tr></thead>
+      <thead><tr><th>#</th><th>Group</th><th>Engine Factor</th><th>ID</th><th>Weight</th></tr></thead>
       <tbody>
-        <tr><td>Integration</td><td>API Aggregator — gọi nhiều API song song, merge kết quả</td><td class="mono">ENG-INT-001</td><td><b>0.50</b></td></tr>
-        <tr><td>Rule & Decision</td><td>Score Calculator — tính điểm, công thức, biến số</td><td class="mono">ENG-RUL-001</td><td><b>0.50</b></td></tr>
-        <tr><td>Rule & Decision</td><td>Cross-System Rule — check nhiều DB/microservice</td><td class="mono">ENG-RUL-002</td><td><b>0.50</b></td></tr>
-        <tr><td>Rule & Decision</td><td>Rule Pipeline — nhiều rule nối tiếp theo kết quả trung gian</td><td class="mono">ENG-RUL-003</td><td><b>0.20</b></td></tr>
-        <tr><td>Rule & Decision</td><td>Rule Context Passing — output rule này → input rule kia</td><td class="mono">ENG-RUL-004</td><td><b>0.20</b></td></tr>
-        <tr><td>Workflow</td><td>Dynamic Router — routing động theo payload/business state</td><td class="mono">ENG-WKF-001</td><td><b>0.50</b></td></tr>
-        <tr><td>Workflow</td><td>State Checkpoint — lưu state giữa chừng để resume</td><td class="mono">ENG-WKF-002</td><td><b>0.20</b></td></tr>
-        <tr><td>Workflow</td><td>DAG Scheduler — job phức tạp có dependency</td><td class="mono">ENG-WKF-003</td><td><b>0.50</b></td></tr>
-        <tr><td>Output</td><td>Report/Export Engine — sinh báo cáo có derived data</td><td class="mono">ENG-OUT-001</td><td><b>0.50</b></td></tr>
+        <tr><td>1</td><td>Integration Engine</td><td>API Aggregator</td><td class="mono">ENG-INT-001</td><td><b>0.5</b></td></tr>
+        <tr><td>2</td><td>Rule & Decision Engine</td><td>Score Calculator</td><td class="mono">ENG-RUL-001</td><td><b>0.5</b></td></tr>
+        <tr><td>3</td><td>Rule & Decision Engine</td><td>Cross-System Rule</td><td class="mono">ENG-RUL-002</td><td><b>0.5</b></td></tr>
+        <tr><td>4</td><td>Rule & Decision Engine</td><td>Rule Pipeline</td><td class="mono">ENG-RUL-003</td><td><b>0.2</b></td></tr>
+        <tr><td>5</td><td>Rule & Decision Engine</td><td>Rule Context Passing</td><td class="mono">ENG-RUL-004</td><td><b>0.2</b></td></tr>
+        <tr><td>6</td><td>Workflow & Orchestration</td><td>Dynamic Router</td><td class="mono">ENG-WKF-001</td><td><b>0.5</b></td></tr>
+        <tr><td>7</td><td>Workflow & Orchestration</td><td>State Checkpoint</td><td class="mono">ENG-WKF-002</td><td><b>0.2</b></td></tr>
+        <tr><td>8</td><td>Workflow & Orchestration</td><td>DAG Scheduler</td><td class="mono">ENG-WKF-003</td><td><b>0.5</b></td></tr>
+        <tr><td>9</td><td>Workflow & Orchestration</td><td>Distributed Tracker</td><td class="mono">ENG-WKF-004</td><td><b>0.2</b></td></tr>
+        <tr><td>10</td><td>Workflow & Orchestration</td><td>Rollback Executor</td><td class="mono">ENG-WKF-005</td><td><b>0.5</b></td></tr>
+        <tr><td>11</td><td>Data & Streaming Engine</td><td>Event Aggregator</td><td class="mono">ENG-STR-001</td><td><b>0.2</b></td></tr>
+        <tr><td>12</td><td>Data & Streaming Engine</td><td>Pattern Matcher</td><td class="mono">ENG-STR-002</td><td><b>0.2</b></td></tr>
+        <tr><td>13</td><td>Data & AI Engine</td><td>Feature Profiler</td><td class="mono">ENG-DAI-001</td><td><b>0.2</b></td></tr>
+        <tr><td>14</td><td>Data & AI Engine</td><td>Outlier Detector</td><td class="mono">ENG-DAI-002</td><td><b>0.2</b></td></tr>
+        <tr><td>15</td><td>Data & AI Engine</td><td>Fuzzy Search</td><td class="mono">ENG-DAI-003</td><td><b>0.2</b></td></tr>
+        <tr><td>16</td><td>Data & AI Engine</td><td>Record Merger</td><td class="mono">ENG-DAI-004</td><td><b>0.2</b></td></tr>
+        <tr><td>17</td><td>Data & AI Engine</td><td>Context Profiler</td><td class="mono">ENG-DAI-005</td><td><b>0.2</b></td></tr>
+        <tr><td>18</td><td>Data & AI Engine</td><td>Item Ranker</td><td class="mono">ENG-DAI-006</td><td><b>0.2</b></td></tr>
+        <tr><td>19</td><td>Data & AI Engine</td><td>Vector Search</td><td class="mono">ENG-DAI-007</td><td><b>0.2</b></td></tr>
+        <tr><td>20</td><td>Data & AI Engine</td><td>Prompt Builder</td><td class="mono">ENG-DAI-008</td><td><b>0.2</b></td></tr>
+        <tr><td>21</td><td>Data & AI Engine</td><td>LLM Parser</td><td class="mono">ENG-DAI-009</td><td><b>0.2</b></td></tr>
+        <tr><td>22</td><td>Data & AI Engine</td><td>Faceted Search</td><td class="mono">ENG-DAI-010</td><td><b>0.5</b></td></tr>
+        <tr><td>23</td><td>Presentation & Output</td><td>Document Generator</td><td class="mono">ENG-OUT-001</td><td><b>0.5</b></td></tr>
+        <tr><td>24</td><td>Presentation & Output</td><td>Client Profiler</td><td class="mono">ENG-OUT-002</td><td><b>0.2</b></td></tr>
+        <tr><td>25</td><td>Presentation & Output</td><td>UI Schema Builder</td><td class="mono">ENG-OUT-003</td><td><b>0.2</b></td></tr>
+        <tr><td>26</td><td>Resilience & Security</td><td>DLQ Handler</td><td class="mono">ENG-SEC-001</td><td><b>0.2</b></td></tr>
+        <tr><td>27</td><td>Resilience & Security</td><td>Policy Evaluator</td><td class="mono">ENG-SEC-002</td><td><b>0.2</b></td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="card-title">Complexity Weight — Orthodox Method (Phụ lục)</div>
-    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Dùng khi cần tính chính xác hơn thay vì dùng average. Xác định Low/Usually/High theo số RET/FTR và DET.</p>
-
+    <div class="card-title">Complexity Weight — Orthodox Method</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Dùng khi cần tính chính xác hơn average. Xác định Low/Usually/High theo RET/FTR và DET.</p>
     <div class="ref-section">
       <h3>ILF & EIF — theo RET × DET</h3>
       <table class="complexity-table">
@@ -412,12 +574,11 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <tr><td>6+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
         </tbody>
       </table>
-      <div style="display:flex;gap:12px;margin-top:8px;font-size:12px">
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px">
         <span><b>ILF:</b> Low=7, Usually=10, High=15</span>
         <span><b>EIF:</b> Low=5, Usually=7, High=10</span>
       </div>
     </div>
-
     <div class="ref-section">
       <h3>EI — theo FTR × DET</h3>
       <table class="complexity-table">
@@ -430,7 +591,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </table>
       <div style="font-size:12px;margin-top:8px"><b>EI weights:</b> Low=3, Usually=4, High=6</div>
     </div>
-
     <div class="ref-section">
       <h3>EO & EQ — theo FTR × DET</h3>
       <table class="complexity-table">
@@ -441,18 +601,16 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <tr><td>4+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
         </tbody>
       </table>
-      <div style="display:flex;gap:12px;margin-top:8px;font-size:12px">
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px">
         <span><b>EO weights:</b> Low=4, Usually=5, High=7</span>
         <span><b>EQ weights:</b> Low=3, Usually=4, High=6</span>
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- ==================== TAB: TIPS ==================== -->
+<!-- ===== TAB: TIPS ===== -->
 <div id="panel-tips" class="panel">
-
   <div class="card">
     <div class="card-title">Cách phân loại nhanh</div>
     <table>
@@ -461,8 +619,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         <tr><td>Lưu / tạo / sửa / xóa data vào DB?</td><td><span class="badge badge-EI">EI</span></td></tr>
         <tr><td>Hiển thị data + có tính toán / thống kê / biểu đồ?</td><td><span class="badge badge-EO">EO</span></td></tr>
         <tr><td>Chỉ đọc / search / hiển thị / download / login?</td><td><span class="badge badge-EQ">EQ</span></td></tr>
-        <tr><td>Data table thuộc hệ thống mình quản lý?</td><td><span class="badge badge-ILF">ILF</span></td></tr>
-        <tr><td>Data đến từ hệ thống bên ngoài?</td><td><span class="badge badge-EIF">EIF</span></td></tr>
+        <tr><td>Data table do chính app quản lý, bên trong boundary?</td><td><span class="badge badge-ILF">ILF</span></td></tr>
+        <tr><td>Data đến từ hệ thống bên ngoài, app chỉ đọc?</td><td><span class="badge badge-EIF">EIF</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -473,15 +631,35 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <thead><tr><th>Tình huống</th><th>Đúng</th><th>Sai</th><th>Lý do</th></tr></thead>
       <tbody>
         <tr><td>Data Loading</td><td><span class="badge badge-EI">EI</span></td><td>EO, EQ</td><td>Load data vào hệ thống → EI</td></tr>
-        <tr><td>Graph / Biểu đồ</td><td><span class="badge badge-EO">EO</span></td><td>EQ</td><td>Biểu đồ luôn có tính toán → EO</td></tr>
+        <tr><td>Graph / Biểu đồ</td><td><span class="badge badge-EO">EO</span></td><td>EQ</td><td>Luôn có tính toán → EO</td></tr>
         <tr><td>Download file</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Chỉ lấy ra, không tính toán → EQ</td></tr>
         <tr><td>Login</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Verify password, không maintain ILF → EQ</td></tr>
         <tr><td>User Authentication</td><td><span class="badge badge-EQ">EQ</span></td><td>EI, EO</td><td>Tương tự Login → EQ</td></tr>
         <tr><td>Statistics / Thống kê</td><td><span class="badge badge-EO">EO</span></td><td>EQ</td><td>Có tổng hợp, tính toán → EO</td></tr>
-        <tr><td>Send (email, notify...)</td><td><span class="badge badge-EQ">EQ</span> / <span class="badge badge-EO">EO</span></td><td>EI</td><td>Gửi ra ngoài, không maintain ILF → EQ/EO</td></tr>
+        <tr><td>Send (email, notify...)</td><td><span class="badge badge-EQ">EQ</span>&nbsp;<span class="badge badge-EO">EO</span></td><td>EI</td><td>Gửi ra ngoài, không maintain ILF</td></tr>
         <tr><td>Code data (lookup table)</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Loại khỏi scope</td></tr>
         <tr><td>Temporary files</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Loại khỏi scope</td></tr>
         <tr><td>Attachment đơn lẻ</td><td colspan="2" style="color:var(--text3)">Không tính</td><td>Không complete unit process</td></tr>
+        <tr><td>Subordinate entity (con của ILF)</td><td colspan="2" style="color:var(--text3)">Tính chung 1 ILF</td><td>VD: Notice Attachment là con của Notice Info → 1 ILF</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ví dụ thực tế từ slide</div>
+    <table>
+      <thead><tr><th>Feature</th><th>Type</th><th>UI weight</th><th>Engine weight</th><th>Total FP</th></tr></thead>
+      <tbody>
+        <tr><td>View Kanban Board</td><td><span class="badge badge-EQ">EQ</span></td><td>—</td><td>—</td><td><b>3.9</b></td></tr>
+        <tr><td>Update Card (drag-drop Kanban)</td><td><span class="badge badge-EI">EI</span></td><td>+0.4</td><td>—</td><td><b>5.6</b></td></tr>
+        <tr><td>View Task Statistics (chart)</td><td><span class="badge badge-EO">EO</span></td><td>+0.3</td><td>—</td><td><b>6.76</b></td></tr>
+        <tr><td>View WBS Tree</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.7</td><td>—</td><td><b>6.63</b></td></tr>
+        <tr><td>View Gantt Chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.38</td><td>—</td><td><b>7.18</b></td></tr>
+        <tr><td>Create/Update/Delete WBS item</td><td><span class="badge badge-EI">EI</span></td><td>—</td><td>—</td><td><b>4.0</b></td></tr>
+        <tr><td>Calc recommended bid price</td><td><span class="badge badge-EO">EO</span></td><td>—</td><td>+0.5</td><td><b>7.8</b></td></tr>
+        <tr><td>Block list danh sách công ty</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.2</td><td>—</td><td><b>4.68</b></td></tr>
+        <tr><td>Export báo cáo PDF/Excel có chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.7</td><td>+0.5</td><td><b>11.44</b></td></tr>
+        <tr><td>Notice Information (ILF)</td><td><span class="badge badge-ILF">ILF</span></td><td>—</td><td>—</td><td><b>7.5</b></td></tr>
       </tbody>
     </table>
   </div>
@@ -492,9 +670,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <p style="margin-bottom:10px"><b style="color:var(--text)">① Dùng cột A để sort và đánh số thứ tự</b> trong form tính FP.</p>
       <p style="margin-bottom:6px"><b style="color:var(--text)">② Data Functions (ILF, EIF):</b></p>
       <ul style="padding-left:18px;margin-bottom:10px">
-        <li>Xóa code data — chỉ giữ business data và reference data</li>
+        <li>Xóa code data — chỉ giữ business & reference data</li>
         <li>Sort theo "Data Function Name" để loại duplicate</li>
-        <li>Kiểm tra subordinate relationship — nếu A là con của B thì tính chung 1 ILF</li>
+        <li>Kiểm tra subordinate — nếu A là con của B thì tính chung 1 ILF</li>
         <li>(Orthodox) Verify RET và DET counts</li>
       </ul>
       <p style="margin-bottom:6px"><b style="color:var(--text)">② Transaction Functions (EI, EO, EQ):</b></p>
@@ -509,30 +687,11 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   </div>
 
   <div class="card">
-    <div class="card-title">Ví dụ thực tế từ slide</div>
-    <table>
-      <thead><tr><th>Feature</th><th>Type</th><th>UI</th><th>Engine</th><th>Total FP</th></tr></thead>
-      <tbody>
-        <tr><td>View Kanban Board</td><td><span class="badge badge-EQ">EQ</span></td><td>—</td><td>—</td><td><b>3.9</b></td></tr>
-        <tr><td>Update Card (drag-drop Kanban)</td><td><span class="badge badge-EI">EI</span></td><td>+0.4</td><td>—</td><td><b>5.6</b></td></tr>
-        <tr><td>View Task Statistics (chart)</td><td><span class="badge badge-EO">EO</span></td><td>+0.3</td><td>—</td><td><b>6.76</b></td></tr>
-        <tr><td>View WBS Tree</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.7</td><td>—</td><td><b>6.63</b></td></tr>
-        <tr><td>View Gantt Chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.38</td><td>—</td><td><b>7.18</b></td></tr>
-        <tr><td>Create/Update/Delete WBS</td><td><span class="badge badge-EI">EI</span></td><td>—</td><td>—</td><td><b>4.0</b></td></tr>
-        <tr><td>Calc bid price (Naver API)</td><td><span class="badge badge-EO">EO</span></td><td>—</td><td>+0.5</td><td><b>7.8</b></td></tr>
-        <tr><td>Block list danh sách công ty</td><td><span class="badge badge-EQ">EQ</span></td><td>+0.2</td><td>—</td><td><b>4.68</b></td></tr>
-        <tr><td>Export báo cáo PDF/Excel có chart</td><td><span class="badge badge-EO">EO</span></td><td>+0.7</td><td>+0.5</td><td><b>11.44</b></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
     <div class="card-title">⚠ Lưu ý quan trọng</div>
     <div class="tip-box">
       Weight adjustment (UI Factor / Engine Factor) phải có lý do rõ ràng, phải được <b>QA/PM/TL review</b> và subject to <b>post-audit by QS</b>. Hạn chế dùng tùy tiện. Nếu UI/Engine bình thường → để weight = 0.
     </div>
   </div>
-
 </div>
 
 </div>
@@ -542,10 +701,8 @@ const BASE={EI:4,EO:5.2,EQ:3.9,ILF:7.5,EIF:5.4};
 let history=JSON.parse(localStorage.getItem('fp_history')||'[]');
 
 function switchTab(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>{
-    const panels=['calc','task','history','ref','tips'];
-    t.classList.toggle('active',panels[i]===name);
-  });
+  const panels=['calc','task','history','process','ref','tips'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',panels[i]===name));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
   if(name==='history')renderHistory();
@@ -572,7 +729,7 @@ function updateCalc(){
 
 function saveToHistory(){
   const type=document.getElementById('fptype').value;
-  if(!type)return;
+  if(!type){alert('Chọn loại FP trước!');return;}
   const ui=parseFloat(document.getElementById('ui1').value)||0;
   const eng=parseFloat(document.getElementById('eng1').value)||0;
   const base=BASE[type];
@@ -585,7 +742,10 @@ function saveToHistory(){
 
 function renderHistory(){
   const el=document.getElementById('history-list');
-  if(!history.length){el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div>';document.getElementById('totals-area').style.display='none';return;}
+  if(!history.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div>';
+    document.getElementById('totals-area').style.display='none';return;
+  }
   const totalFP=history.reduce((s,h)=>s+h.total,0);
   document.getElementById('totals-area').style.display='block';
   document.getElementById('total-sum').textContent=totalFP.toFixed(2)+' FP';
@@ -595,14 +755,13 @@ function renderHistory(){
     <div class="history-item">
       <div>
         <div class="history-desc">${h.desc}</div>
-        <div class="history-meta"><span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span> &nbsp;Base ${h.base} FP &nbsp;·&nbsp; ${h.date}</div>
+        <div class="history-meta"><span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span>&nbsp;Base ${h.base} FP&nbsp;·&nbsp;${h.date}</div>
       </div>
       <div style="text-align:right">
         <div class="history-fp">${h.total} FP</div>
         <div style="font-size:11px;color:var(--text3)">${h.hours}h / ${h.md} MD</div>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
 function clearHistory(){
@@ -614,17 +773,12 @@ function exportHistory(){
   const rows=[['Mô tả','Loại','Base FP','UI Weight','Engine Weight','Total FP','Giờ công','Man-day','Ngày']];
   history.forEach(h=>rows.push([`"${h.desc}"`,h.type,h.base,h.ui,h.eng,h.total,h.hours,h.md,h.date]));
   const csv=rows.map(r=>r.join(',')).join('\n');
-  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
   a.download='FP_History.csv';a.click();
 }
 
-const TASK_MAP=[
-  {max:1,md:0.13,fp:0.21},
-  {max:2,md:0.25,fp:0.41},
-  {max:4,md:0.50,fp:0.82},
-  {max:6,md:0.75,fp:1.24},
-  {max:8,md:1.00,fp:1.65}
-];
+const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,fp:0.82},{max:6,md:0.75,fp:1.24},{max:8,md:1.00,fp:1.65}];
 function calcTask(){
   const h=parseFloat(document.getElementById('task-hours').value);
   if(isNaN(h)||h<0){document.getElementById('task-result').style.display='none';return;}
@@ -634,6 +788,33 @@ function calcTask(){
   document.getElementById('task-md').textContent=row.md+' MD';
 }
 
+const UI_LIST=[
+  {id:'LAYOUT-BLOCK-001',w:0.2},{id:'LAYOUT-MASTER-001',w:0.4},{id:'LAYOUT-TAB-001',w:0.23},
+  {id:'TABLE-EDITABLE-001',w:0.5},{id:'TABLE-INFSCROLL-001',w:0.3},{id:'TABLE-PINNING-001',w:0.45},
+  {id:'TABLE-DRAGDROP-001',w:0.6},{id:'TABLE-TREE-001',w:0.45},
+  {id:'TREE-TREE-001',w:0.7},{id:'TREE-DRAGDROP-001',w:0.5},{id:'TREE-LAZEXPAND-001',w:0.3},{id:'TREE-MULTI-001',w:0.5},
+  {id:'DIALOG-POPUP-001',w:0.15},{id:'DIALOG-PANEL-001',w:0.2},
+  {id:'CHART-INTER-001',w:0.3},{id:'CHART-REALTIME-001',w:0.3},
+  {id:'DRAGDROP-REORDER-001',w:0.4},{id:'DRAGDROP-BOARD-001',w:0.4},{id:'DRAGDROP-TREE-001',w:0.35},{id:'DRAGDROP-RESIZE-001',w:0.35},
+  {id:'FLOWS-STEP-001',w:0.25},{id:'FLOWS-BASED-001',w:1.0},
+  {id:'CALENDAR-STATIC-001',w:0.5},{id:'CALENDAR-INTERACTIVE-001',w:0.5},{id:'CALENDAR-GANTT-001',w:0.38},
+  {id:'MAP-STATIC-001',w:0.5},{id:'MAP-INTERACTIVE-001',w:1.0},
+  {id:'FORMS-DYNAMIC-001',w:0.2},{id:'EDITOR-TEXT-001',w:0.5},
+  {id:'STREAM-VIDAUD-001',w:1.0},{id:'STREAM-FILES-001',w:0.5},
+  {id:'EXPORT-BY-TEMP001',w:0.7}
+];
+const ENG_LIST=[
+  {id:'ENG-INT-001',w:0.5},
+  {id:'ENG-RUL-001',w:0.5},{id:'ENG-RUL-002',w:0.5},{id:'ENG-RUL-003',w:0.2},{id:'ENG-RUL-004',w:0.2},
+  {id:'ENG-WKF-001',w:0.5},{id:'ENG-WKF-002',w:0.2},{id:'ENG-WKF-003',w:0.5},{id:'ENG-WKF-004',w:0.2},{id:'ENG-WKF-005',w:0.5},
+  {id:'ENG-STR-001',w:0.2},{id:'ENG-STR-002',w:0.2},
+  {id:'ENG-DAI-001',w:0.2},{id:'ENG-DAI-002',w:0.2},{id:'ENG-DAI-003',w:0.2},{id:'ENG-DAI-004',w:0.2},
+  {id:'ENG-DAI-005',w:0.2},{id:'ENG-DAI-006',w:0.2},{id:'ENG-DAI-007',w:0.2},{id:'ENG-DAI-008',w:0.2},
+  {id:'ENG-DAI-009',w:0.2},{id:'ENG-DAI-010',w:0.5},
+  {id:'ENG-OUT-001',w:0.5},{id:'ENG-OUT-002',w:0.2},{id:'ENG-OUT-003',w:0.2},
+  {id:'ENG-SEC-001',w:0.2},{id:'ENG-SEC-002',w:0.2}
+];
+
 async function autoClassify(){
   const desc=document.getElementById('desc').value.trim();
   if(!desc){alert('Nhập mô tả feature trước nhé!');return;}
@@ -641,14 +822,15 @@ async function autoClassify(){
   btn.innerHTML='<span class="spinner"></span> Đang phân tích...';btn.disabled=true;
   document.getElementById('ai-result').innerHTML='';
   try{
+    const uiIds=UI_LIST.map(u=>`${u.id}=${u.w}`).join(',');
+    const engIds=ENG_LIST.map(e=>`${e.id}=${e.w}`).join(',');
     const sys=`Bạn là chuyên gia Function Point theo chuẩn IFPUG và LG CNS CoE Simplified Method.
 Phân loại feature và trả về JSON hợp lệ duy nhất, không có markdown, không có text thêm.
-Format:
-{"fpType":"EI|EO|EQ|ILF|EIF","uiWeight":number,"uiId":"ID hoặc empty","engWeight":number,"engId":"ID hoặc empty","reasoning":"giải thích ngắn 1-2 câu","tip":"edge case hoặc empty"}
-UI weights: LAYOUT-BLOCK-001=0.2, LAYOUT-MASTER-001=0.4, LAYOUT-TAB-001=0.23, TABLE-EDITABLE-001=0.5, TABLE-INFSCROLL-001=0.3, TABLE-PINNING-001=0.45, TABLE-DRAGDROP-001=0.6, TABLE-TREE-001=0.45, TREE-TREE-001=0.7, TREE-DRAGDROP-001=0.5, CHART-REALTIME-001=0.3, CALENDAR-GANTT-001=0.38, EXPORT-BY-TEMP001=0.7, DRAGDROP-BOARD-001=0.4
-Engine weights: ENG-INT-001=0.5, ENG-RUL-001=0.5, ENG-RUL-002=0.5, ENG-RUL-003=0.2, ENG-RUL-004=0.2, ENG-WKF-001=0.5, ENG-WKF-002=0.2, ENG-WKF-003=0.5, ENG-OUT-001=0.5
-Nếu không có UI hoặc Engine đặc biệt, trả 0 và empty string.`;
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,system:sys,messages:[{role:'user',content:desc}]})});
+Format: {"fpType":"EI|EO|EQ|ILF|EIF","uiWeight":number,"uiId":"ID hoặc empty string","engWeight":number,"engId":"ID hoặc empty string","reasoning":"giải thích ngắn 1-2 câu tại sao chọn loại này","tip":"edge case hoặc empty string"}
+UI Factor IDs và weights: ${uiIds}
+Engine Factor IDs và weights: ${engIds}
+Rules: EI=create/update/delete/data loading; EO=output có tính toán/thống kê/biểu đồ; EQ=search/view/download/login/send; ILF=data table bên trong boundary; EIF=data từ hệ thống ngoài. Code data/temp files/attachment đơn lẻ không tính FP. Nếu không có UI hoặc Engine đặc biệt, trả 0 và empty string.`;
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:[{role:'user',content:desc}]})});
     const data=await res.json();
     const text=data.content.find(b=>b.type==='text')?.text||'';
     const p=JSON.parse(text.replace(/```json|```/g,'').trim());
@@ -657,10 +839,10 @@ Nếu không có UI hoặc Engine đặc biệt, trả 0 và empty string.`;
     document.getElementById('eng1').value=String(p.engWeight||0);
     updateCalc();
     let html=`<div class="ai-box"><b>AI phân loại:</b> ${p.reasoning}`;
-    if(p.uiId)html+=`<br><span style="color:var(--text3)">UI: ${p.uiId} (+${p.uiWeight})</span>`;
-    if(p.engId)html+=`<br><span style="color:var(--text3)">Engine: ${p.engId} (+${p.engWeight})</span>`;
-    if(p.tip)html+=`</div><div class="tip-box">⚠ ${p.tip}`;
-    html+='</div>';
+    if(p.uiId)html+=`<br><span style="color:var(--text3)">UI Factor: ${p.uiId} (+${p.uiWeight})</span>`;
+    if(p.engId)html+=`<br><span style="color:var(--text3)">Engine Factor: ${p.engId} (+${p.engWeight})</span>`;
+    html+=`</div>`;
+    if(p.tip)html+=`<div class="tip-box">⚠ ${p.tip}</div>`;
     document.getElementById('ai-result').innerHTML=html;
   }catch(e){
     document.getElementById('ai-result').innerHTML=`<div class="tip-box">Lỗi: ${e.message}. Vui lòng phân loại thủ công.</div>`;
