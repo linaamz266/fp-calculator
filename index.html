@@ -156,15 +156,15 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="grid3">
       <div class="field">
         <label>Dev <span class="req">*</span></label>
-        <select id="dev" onchange="checkCalcSave()">
-          <option value="">— chọn dev —</option>
-          <option>DINH BNH DUONG</option>
-          <option>DO TOAN THANG</option>
-          <option>DUONG PHUONG THAO</option>
-          <option>NGUYEN THI MINH THUY</option>
-          <option>PHAM VAN LINH</option>
-          <option>TRAN ANH VAN</option>
-        </select>
+        <input type="text" id="dev" list="dev-list" placeholder="Chọn hoặc nhập tên dev" oninput="checkCalcSave()">
+        <datalist id="dev-list">
+          <option value="DINH BNH DUONG">
+          <option value="DO TOAN THANG">
+          <option value="DUONG PHUONG THAO">
+          <option value="NGUYEN THI MINH THUY">
+          <option value="PHAM VAN LINH">
+          <option value="TRAN ANH VAN">
+        </datalist>
         <div class="field-error" id="dev-err">Vui lòng chọn dev.</div>
       </div>
       <div class="field">
@@ -338,15 +338,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="grid3">
       <div class="field">
         <label>Dev <span class="req">*</span></label>
-        <select id="task-dev" onchange="checkTaskSave()">
-          <option value="">— chọn dev —</option>
-          <option>DINH BNH DUONG</option>
-          <option>DO TOAN THANG</option>
-          <option>DUONG PHUONG THAO</option>
-          <option>NGUYEN THI MINH THUY</option>
-          <option>PHAM VAN LINH</option>
-          <option>TRAN ANH VAN</option>
-        </select>
+        <input type="text" id="task-dev" list="dev-list" placeholder="Chọn hoặc nhập tên dev" oninput="checkTaskSave()">
         <div class="field-error" id="task-dev-err">Vui lòng chọn dev.</div>
       </div>
       <div class="field">
@@ -709,7 +701,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="xlsx.full.min.js"></script>
 <script>
 const BASE={EI:4,EO:5.2,EQ:3.9,ILF:7.5,EIF:5.4};
 const BASE_NAMES={EI:'External Input',EO:'External Output',EQ:'External Query',ILF:'Internal Logic File',EIF:'External Interface File'};
@@ -743,7 +735,7 @@ function getSelectLabel(id){
 function checkCalcSave(){
   const desc=document.getElementById('desc').value.trim();
   const type=document.getElementById('fptype').value;
-  const dev=document.getElementById('dev').value;
+  const dev=document.getElementById('dev').value.trim();
   document.getElementById('btn-save-calc').disabled=!(desc&&type&&dev);
 }
 
@@ -751,7 +743,7 @@ function validateCalc(){
   let ok=true;
   const desc=document.getElementById('desc').value.trim();
   const type=document.getElementById('fptype').value;
-  const dev=document.getElementById('dev').value;
+  const dev=document.getElementById('dev').value.trim();
   const setErr=(id,errId,show)=>{
     document.getElementById(id).classList.toggle('error',show);
     document.getElementById(errId).classList.toggle('show',show);
@@ -794,7 +786,7 @@ function saveToHistory(){
   const base=BASE[type];
   const total=+(base*(1+ui.weight+eng.weight)).toFixed(2);
   const desc=document.getElementById('desc').value.trim();
-  const dev=document.getElementById('dev').value;
+  const dev=document.getElementById('dev').value.trim();
   const sprint=document.getElementById('sprint').value.trim();
   const jira=document.getElementById('jira').value.trim();
   const uiLabel=getSelectLabel('ui1');
@@ -804,8 +796,8 @@ function saveToHistory(){
   history.unshift({
     id:Date.now(),desc,dev,sprint,jira,
     type,typeName:BASE_NAMES[type],base,
-    ui:ui.weight,uiId:ui.id,uiName:ui.id?uiLabel:'—',
-    eng:eng.weight,engId:eng.id,engName:eng.id?engLabel:'—',
+    ui:ui.weight,uiId:ui.id,uiName:uiLabel,
+    eng:eng.weight,engId:eng.id,engName:engLabel,
     total,
     effortHours:+(total*4.85).toFixed(1),
     md:+(total*4.85/8).toFixed(2),
@@ -870,88 +862,131 @@ function deleteHistoryItem(id){
 function exportExcel(){
   if(!history.length){showToast('Không có dữ liệu để export.');return;}
 
-  const headers=[
-    'Task','Jira Link','Sprint','Dev',
-    'Type','Base FP','Base FP Name',
-    'UI Weight','UI Weight Name',
-    'Engine Weight','Engine Weight Name',
-    'Total FP','Effort Hours','Man-day','Date'
-  ];
+  /* ── Sanitize helpers ── */
+  function cv(v){
+    // Force every value to a primitive string or finite number for SheetJS
+    if(v===null||v===undefined)return '';
+    if(typeof v==='boolean')return v?1:0;
+    if(typeof v==='number'){
+      if(!isFinite(v))return 0;
+      return v;
+    }
+    // For everything else (object, array...) → stringify
+    const s=String(v);
+    // Try to parse as number only if it looks numeric and has no letters
+    const n=Number(s);
+    if(!isNaN(n)&&s.trim()!=='')return n;
+    return s;
+  }
+  function cs(v){return(v===null||v===undefined)?'':String(v);}
+  function cn(v){
+    const n=parseFloat(String(v));
+    return isNaN(n)||!isFinite(n)?0:n;
+  }
 
-  const s=v=>(v===undefined||v===null)?'':String(v);
-  const n=v=>(v===undefined||v===null||isNaN(v))?0:Number(v);
-  const rows=history.map(h=>[
-    s(h.desc),
-    s(h.jira),
-    s(h.sprint),
-    s(h.dev),
-    s(h.type),
-    n(h.base),
-    s(h.typeName||BASE_NAMES[h.type]||h.type),
-    n(h.ui),
-    s(h.uiName),
-    n(h.eng),
-    s(h.engName),
-    n(h.total),
-    n(h.effortHours),
-    n(h.md),
-    s(h.date)
-  ]);
+  const d=new Date();
+  const fname='FP_Report_'+d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear()+'.xlsx';
 
-  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+  /* ── Sheet 1: Detail ── */
+  const COLS=['Task','Jira Link','Sprint','Dev','Type','Base FP','Base FP Name',
+    'UI Weight','UI Weight Name','Engine Weight','Engine Weight Name',
+    'Total FP','Effort Hours','Man-day','Date'];
 
+  // Build worksheet manually using cell objects to bypass aoa_to_sheet type-detection bug
+  const ws={};
+  // Header row
+  COLS.forEach((h,c)=>{
+    const addr=XLSX.utils.encode_cell({r:0,c});
+    ws[addr]={t:'s',v:h};
+  });
+  // Data rows
+  history.forEach((h,r)=>{
+    const vals=[
+      cs(h.desc), cs(h.jira), cs(h.sprint), cs(h.dev), cs(h.type),
+      cn(h.base), cs(h.typeName||BASE_NAMES[h.type]||h.type),
+      cn(h.ui), cs(h.uiName),
+      cn(h.eng), cs(h.engName),
+      cn(h.total), cn(h.effortHours), cn(h.md),
+      cs(h.date)
+    ];
+    vals.forEach((val,c)=>{
+      const addr=XLSX.utils.encode_cell({r:r+1,c});
+      if(typeof val==='number') ws[addr]={t:'n',v:val};
+      else ws[addr]={t:'s',v:String(val)};
+    });
+  });
+  ws['!ref']=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:history.length,c:COLS.length-1}});
   ws['!cols']=[
     {wch:40},{wch:35},{wch:8},{wch:22},
     {wch:6},{wch:9},{wch:24},
-    {wch:11},{wch:35},
-    {wch:14},{wch:35},
+    {wch:11},{wch:35},{wch:14},{wch:35},
     {wch:10},{wch:13},{wch:10},{wch:12}
   ];
-
-  ws['!autofilter']={ref:'A1:O1'};
+  ws['!autofilter']={ref:'A1:O'+(history.length+1)};
   ws['!views']=[{state:'frozen',xSplit:0,ySplit:1}];
 
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,'FP Report',ws);
-
-  const d=new Date();
+  /* ── Sheet 2: Summary ── */
   const today=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
-  const totalFP=history.reduce((s,h)=>s+h.total,0);
-
-  const summaryData=[
+  const totalFP=history.reduce((acc,h)=>acc+cn(h.total),0);
+  const summaryRows=[
     ['FP Report Summary',''],
     ['Export Date',today],
     ['Total Records',history.length],
     ['Total FP',+totalFP.toFixed(2)],
     ['Total Effort Hours',+(totalFP*4.85).toFixed(1)],
     ['Total Man-day',+(totalFP*4.85/8).toFixed(2)],
-    ['',''],
-    ['By Type','FP']
+    ['',''],['By Type','FP']
   ];
   const byType={};
-  history.forEach(h=>{byType[h.type]=(byType[h.type]||0)+h.total;});
-  Object.entries(byType).forEach(([t,fp])=>summaryData.push([t,+fp.toFixed(2)]));
-  summaryData.push(['',''],['By Dev','FP']);
+  history.forEach(h=>{byType[h.type]=(byType[h.type]||0)+cn(h.total);});
+  Object.entries(byType).forEach(([t,fp])=>summaryRows.push([t,+fp.toFixed(2)]));
+  summaryRows.push(['',''],['By Dev','FP']);
   const byDev={};
-  history.forEach(h=>{if(h.dev)byDev[h.dev]=(byDev[h.dev]||0)+h.total;});
-  Object.entries(byDev).forEach(([dev,fp])=>summaryData.push([dev,+fp.toFixed(2)]));
+  history.forEach(h=>{if(h.dev)byDev[h.dev]=(byDev[h.dev]||0)+cn(h.total);});
+  Object.entries(byDev).forEach(([dev,fp])=>summaryRows.push([dev,+fp.toFixed(2)]));
 
-  const ws2=XLSX.utils.aoa_to_sheet(summaryData);
+  const ws2={};
+  summaryRows.forEach((row,r)=>{
+    row.forEach((val,c)=>{
+      const addr=XLSX.utils.encode_cell({r,c});
+      if(typeof val==='number') ws2[addr]={t:'n',v:val};
+      else ws2[addr]={t:'s',v:String(val===null||val===undefined?'':val)};
+    });
+  });
+  ws2['!ref']=XLSX.utils.encode_range({s:{r:0,c:0},e:{r:summaryRows.length-1,c:1}});
   ws2['!cols']=[{wch:28},{wch:16}];
-  XLSX.utils.book_append_sheet(wb,'Summary',ws2);
 
-  const fname='FP_Report_'+d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear()+'.xlsx';
-  const wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
-  const blob=new Blob([wbout],{type:'application/octet-stream'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download=fname;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('✓ Exported successfully!');
+  /* ── Write workbook ── */
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'FP Report');
+  XLSX.utils.book_append_sheet(wb,ws2,'Summary');
+
+  try{
+    XLSX.writeFile(wb,fname);
+    showToast('\u2713 Exported successfully!');
+  }catch(err){
+    console.error('XLSX writeFile error:',err);
+    // Fallback: binary write + blob
+    try{
+      function s2ab(str){
+        const buf=new ArrayBuffer(str.length);
+        const view=new Uint8Array(buf);
+        for(let i=0;i<str.length;i++)view[i]=str.charCodeAt(i)&0xFF;
+        return buf;
+      }
+      const out=XLSX.write(wb,{bookType:'xlsx',type:'binary'});
+      const blob=new Blob([s2ab(out)],{type:'application/octet-stream'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;a.download=fname;
+      document.body.appendChild(a);a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('\u2713 Exported successfully!');
+    }catch(err2){
+      showToast('\u274c Export l\u1ed7i: '+err2.message);
+    }
+  }
 }
 
 const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,fp:0.82},{max:6,md:0.75,fp:1.24},{max:8,md:1.00,fp:1.65}];
@@ -959,7 +994,7 @@ const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,f
 function checkTaskSave(){
   const desc=document.getElementById('task-desc').value.trim();
   const hours=document.getElementById('task-hours').value;
-  const dev=document.getElementById('task-dev').value;
+  const dev=document.getElementById('task-dev').value.trim();
   document.getElementById('btn-save-task').disabled=!(desc&&hours!==''&&dev);
 }
 
@@ -976,7 +1011,7 @@ function calcTask(){
 function validateTask(){
   let ok=true;
   const desc=document.getElementById('task-desc').value.trim();
-  const dev=document.getElementById('task-dev').value;
+  const dev=document.getElementById('task-dev').value.trim();
   const hours=document.getElementById('task-hours').value;
   const setErr=(id,errId,show)=>{
     document.getElementById(id).classList.toggle('error',show);
@@ -993,7 +1028,7 @@ function saveTaskToHistory(){
   const h=parseFloat(document.getElementById('task-hours').value);
   const row=TASK_MAP.find(r=>h<=r.max)||TASK_MAP[TASK_MAP.length-1];
   const desc=document.getElementById('task-desc').value.trim();
-  const dev=document.getElementById('task-dev').value;
+  const dev=document.getElementById('task-dev').value.trim();
   const sprint=document.getElementById('task-sprint').value.trim();
   const jira=document.getElementById('task-jira').value.trim();
   const d=new Date();
