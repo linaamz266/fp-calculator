@@ -27,11 +27,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:16px}
 .card-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:14px}
 label{font-size:12px;color:var(--text2);display:block;margin-bottom:5px;font-weight:500}
+label .req{color:var(--red);margin-left:2px}
 textarea,input,select{font-family:inherit;font-size:14px;width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--radius);background:var(--surface);color:var(--text);appearance:none;transition:border 0.15s}
 textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+textarea.error,input.error,select.error{border-color:var(--red);background:#fff8f8}
 textarea{resize:vertical;min-height:72px}
 input[readonly]{background:var(--surface2);color:var(--text2)}
+.field-error{font-size:11px;color:var(--red);margin-top:4px;display:none}
+.field-error.show{display:block}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .field{margin-bottom:14px}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:13px;cursor:pointer;font-family:inherit;transition:all 0.15s;font-weight:500}
 .btn:hover{background:var(--surface2)}
@@ -53,8 +58,6 @@ input[readonly]{background:var(--surface2);color:var(--text2)}
 .badge-ILF{background:var(--amber-bg);color:var(--amber)}
 .badge-EIF{background:#FAECE7;color:#712B13}
 .badge-TASK{background:var(--surface2);color:var(--text2)}
-.ai-box{background:var(--surface2);border-radius:var(--radius);padding:14px;font-size:13px;color:var(--text2);border-left:3px solid var(--accent)}
-.ai-box b{color:var(--text)}
 .tip-box{background:var(--amber-bg);border-radius:var(--radius);padding:10px 14px;font-size:12px;color:var(--amber);margin-top:10px;border-left:3px solid #EF9F27}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;padding:8px 10px;border-bottom:1px solid var(--border)}
@@ -70,15 +73,14 @@ tr:hover td{background:var(--surface2)}
 .history-meta{font-size:11px;color:var(--text3);margin-top:2px}
 hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%238A8A85' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
-@media(max-width:600px){.grid2{grid-template-columns:1fr}.metric-grid{grid-template-columns:1fr 1fr}.result-hero{flex-direction:column;align-items:flex-start;gap:12px}.tabs{gap:2px}}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}.grid3{grid-template-columns:1fr 1fr}.metric-grid{grid-template-columns:1fr 1fr}.result-hero{flex-direction:column;align-items:flex-start;gap:12px}.tabs{gap:2px}}
+@media(max-width:400px){.grid3{grid-template-columns:1fr}}
 .btn-save-always{background:var(--accent);color:#fff;border-color:var(--accent)}
 .btn-save-always:not([disabled]):hover{background:#3832B0;border-color:#3832B0}
 .btn-save-always[disabled]{background:var(--surface2);color:var(--text3);border-color:var(--border2);cursor:not-allowed}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
 .empty{text-align:center;padding:40px 20px;color:var(--text3)}
 .empty-icon{font-size:32px;margin-bottom:10px}
-.totals-bar{background:var(--accent);color:#fff;border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.totals-bar{background:var(--accent);color:#fff;border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px}
 .totals-bar .t-label{font-size:12px;opacity:0.8}
 .totals-bar .t-val{font-size:20px;font-weight:700}
 .ref-section{margin-bottom:24px}
@@ -120,6 +122,9 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .asis-box ul{font-size:12px;color:var(--text2);padding-left:16px;line-height:1.8}
 .asis-box .condition{font-size:11px;background:rgba(0,0,0,0.06);border-radius:4px;padding:2px 8px;display:inline-block;margin-top:6px}
 @media(max-width:600px){.asis-tobe{grid-template-columns:1fr}.flow-step{min-width:80px;font-size:11px}.boundary-wrap{grid-template-columns:1fr}}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1A1A18;color:#fff;padding:10px 20px;border-radius:var(--radius-lg);font-size:13px;font-weight:500;opacity:0;transition:all 0.25s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#result-area{transition:opacity 0.2s}
 </style>
 </head>
 <body>
@@ -139,21 +144,45 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   <button class="tab" onclick="switchTab('tips')">Tips & Tricks</button>
 </div>
 
-<!-- ===== TAB: CALC ===== -->
+<!-- TAB: CALC -->
 <div id="panel-calc" class="panel active">
   <div class="card">
-    <div class="card-title">Mô tả feature</div>
+    <div class="card-title">Thông tin chung</div>
     <div class="field">
-      <textarea id="desc" placeholder="Nhập mô tả feature / user story...&#10;VD: Màn hình hiển thị WBS dạng tree, có drag-drop để reorder các node"></textarea>
+      <label>Mô tả feature <span class="req">*</span></label>
+      <textarea id="desc" placeholder="Nhập mô tả feature / user story...&#10;VD: Màn hình hiển thị WBS dạng tree, có drag-drop để reorder các node" oninput="checkCalcSave()"></textarea>
+      <div class="field-error" id="desc-err">Vui lòng nhập mô tả feature.</div>
     </div>
-    <div id="ai-result" style="margin-top:12px"></div>
+    <div class="grid3">
+      <div class="field">
+        <label>Dev <span class="req">*</span></label>
+        <select id="dev" onchange="checkCalcSave()">
+          <option value="">— chọn dev —</option>
+          <option>DINH BNH DUONG</option>
+          <option>DO TOAN THANG</option>
+          <option>DUONG PHUONG THAO</option>
+          <option>NGUYEN THI MINH THUY</option>
+          <option>PHAM VAN LINH</option>
+          <option>TRAN ANH VAN</option>
+        </select>
+        <div class="field-error" id="dev-err">Vui lòng chọn dev.</div>
+      </div>
+      <div class="field">
+        <label>Sprint</label>
+        <input type="number" id="sprint" min="1" placeholder="VD: 23" oninput="checkCalcSave()">
+      </div>
+      <div class="field">
+        <label>Jira Link</label>
+        <input type="url" id="jira" placeholder="https://jira.../browse/PROJ-123" oninput="checkCalcSave()">
+      </div>
+    </div>
   </div>
 
   <div class="card">
     <div class="card-title">Phân loại & hệ số</div>
     <div class="grid2" style="margin-bottom:14px">
       <div class="field">
-        <label>Loại FP</label>
+        <label>Loại FP <span class="req">*</span></label>
         <select id="fptype" onchange="updateCalc()">
           <option value="">— chọn loại —</option>
           <option value="EI">EI — External Input (Create/Update/Delete)</option>
@@ -162,6 +191,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <option value="ILF">ILF — Internal Logic File</option>
           <option value="EIF">EIF — External Interface File</option>
         </select>
+        <div class="field-error" id="fptype-err">Vui lòng chọn loại FP.</div>
       </div>
       <div class="field">
         <label>Base FP</label>
@@ -171,107 +201,107 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     <div class="field">
       <label>UI Factor</label>
       <select id="ui1" onchange="updateCalc()">
-        <option value="0">Không có UI đặc biệt (+0)</option>
+        <option value="0|">Không có UI đặc biệt (+0)</option>
         <optgroup label="Layout">
-          <option value="0.2">Block list / Card layout — LAYOUT-BLOCK-001 (+0.2)</option>
-          <option value="0.4">Master-Detail (2 panel) — LAYOUT-MASTER-001 (+0.4)</option>
-          <option value="0.23">Tabbed navigation — LAYOUT-TAB-001 (+0.23)</option>
+          <option value="0.2|LAYOUT-BLOCK-001">Block list / Card layout — LAYOUT-BLOCK-001 (+0.2)</option>
+          <option value="0.4|LAYOUT-MASTER-001">Master-Detail (2 panel) — LAYOUT-MASTER-001 (+0.4)</option>
+          <option value="0.23|LAYOUT-TAB-001">Tabbed navigation — LAYOUT-TAB-001 (+0.23)</option>
         </optgroup>
         <optgroup label="Tables">
-          <option value="0.5">Content editable table — TABLE-EDITABLE-001 (+0.5)</option>
-          <option value="0.3">Infinite Scroll Table — TABLE-INFSCROLL-001 (+0.3)</option>
-          <option value="0.45">Column/Row Pinning — TABLE-PINNING-001 (+0.45)</option>
-          <option value="0.6">Drag-drop rows/columns — TABLE-DRAGDROP-001 (+0.6)</option>
-          <option value="0.45">Tree-structured table — TABLE-TREE-001 (+0.45)</option>
+          <option value="0.5|TABLE-EDITABLE-001">Content editable table — TABLE-EDITABLE-001 (+0.5)</option>
+          <option value="0.3|TABLE-INFSCROLL-001">Infinite Scroll Table — TABLE-INFSCROLL-001 (+0.3)</option>
+          <option value="0.45|TABLE-PINNING-001">Column/Row Pinning — TABLE-PINNING-001 (+0.45)</option>
+          <option value="0.6|TABLE-DRAGDROP-001">Drag-drop rows/columns — TABLE-DRAGDROP-001 (+0.6)</option>
+          <option value="0.45|TABLE-TREE-001">Tree-structured table — TABLE-TREE-001 (+0.45)</option>
         </optgroup>
         <optgroup label="Tree">
-          <option value="0.7">Tree-structured view — TREE-TREE-001 (+0.7)</option>
-          <option value="0.5">Drag-drop move/reorder nodes — TREE-DRAGDROP-001 (+0.5)</option>
-          <option value="0.3">Lazy load children on expand — TREE-LAZEXPAND-001 (+0.3)</option>
-          <option value="0.5">Multi-select/search nodes — TREE-MULTI-001 (+0.5)</option>
+          <option value="0.7|TREE-TREE-001">Tree-structured view — TREE-TREE-001 (+0.7)</option>
+          <option value="0.5|TREE-DRAGDROP-001">Drag-drop move/reorder nodes — TREE-DRAGDROP-001 (+0.5)</option>
+          <option value="0.3|TREE-LAZEXPAND-001">Lazy load children on expand — TREE-LAZEXPAND-001 (+0.3)</option>
+          <option value="0.5|TREE-MULTI-001">Multi-select/search nodes — TREE-MULTI-001 (+0.5)</option>
         </optgroup>
         <optgroup label="Dialogs & Overlays">
-          <option value="0.15">Popup/Modal/Dialog — DIALOG-POPUP-001 (+0.15)</option>
-          <option value="0.2">Side panel / Drawer — DIALOG-PANEL-001 (+0.2)</option>
+          <option value="0.15|DIALOG-POPUP-001">Popup/Modal/Dialog — DIALOG-POPUP-001 (+0.15)</option>
+          <option value="0.2|DIALOG-PANEL-001">Side panel / Drawer — DIALOG-PANEL-001 (+0.2)</option>
         </optgroup>
         <optgroup label="Charts">
-          <option value="0.3">Interactive charts — CHART-INTER-001 (+0.3)</option>
-          <option value="0.3">Real-time updates chart — CHART-REALTIME-001 (+0.3)</option>
+          <option value="0.3|CHART-INTER-001">Interactive charts — CHART-INTER-001 (+0.3)</option>
+          <option value="0.3|CHART-REALTIME-001">Real-time updates chart — CHART-REALTIME-001 (+0.3)</option>
         </optgroup>
         <optgroup label="Drag & Drop">
-          <option value="0.4">Drag & Drop List Reordering — DRAGDROP-REORDER-001 (+0.4)</option>
-          <option value="0.4">Drag & Drop Board (Kanban) — DRAGDROP-BOARD-001 (+0.4)</option>
-          <option value="0.35">Drag & Drop Tree Nodes — DRAGDROP-TREE-001 (+0.35)</option>
-          <option value="0.35">Drag to Create/Resize (calendar) — DRAGDROP-RESIZE-001 (+0.35)</option>
+          <option value="0.4|DRAGDROP-REORDER-001">Drag & Drop List Reordering — DRAGDROP-REORDER-001 (+0.4)</option>
+          <option value="0.4|DRAGDROP-BOARD-001">Drag & Drop Board (Kanban) — DRAGDROP-BOARD-001 (+0.4)</option>
+          <option value="0.35|DRAGDROP-TREE-001">Drag & Drop Tree Nodes — DRAGDROP-TREE-001 (+0.35)</option>
+          <option value="0.35|DRAGDROP-RESIZE-001">Drag to Create/Resize (calendar) — DRAGDROP-RESIZE-001 (+0.35)</option>
         </optgroup>
         <optgroup label="Flows">
-          <option value="0.25">Stepper / Multi-step wizard — FLOWS-STEP-001 (+0.25)</option>
-          <option value="1.0">Flow-base programming editor — FLOWS-BASED-001 (+1.0)</option>
+          <option value="0.25|FLOWS-STEP-001">Stepper / Multi-step wizard — FLOWS-STEP-001 (+0.25)</option>
+          <option value="1.0|FLOWS-BASED-001">Flow-base programming editor — FLOWS-BASED-001 (+1.0)</option>
         </optgroup>
         <optgroup label="Calendar & Timeline">
-          <option value="0.5">Static Calendar — CALENDAR-STATIC-001 (+0.5)</option>
-          <option value="0.5">Interactive Calendar — CALENDAR-INTERACTIVE-001 (+0.5)</option>
-          <option value="0.38">Gantt Chart — CALENDAR-GANTT-001 (+0.38)</option>
+          <option value="0.5|CALENDAR-STATIC-001">Static Calendar — CALENDAR-STATIC-001 (+0.5)</option>
+          <option value="0.5|CALENDAR-INTERACTIVE-001">Interactive Calendar — CALENDAR-INTERACTIVE-001 (+0.5)</option>
+          <option value="0.38|CALENDAR-GANTT-001">Gantt Chart — CALENDAR-GANTT-001 (+0.38)</option>
         </optgroup>
         <optgroup label="Map">
-          <option value="0.5">Static Map — MAP-STATIC-001 (+0.5)</option>
-          <option value="1.0">Interactive Map — MAP-INTERACTIVE-001 (+1.0)</option>
+          <option value="0.5|MAP-STATIC-001">Static Map — MAP-STATIC-001 (+0.5)</option>
+          <option value="1.0|MAP-INTERACTIVE-001">Interactive Map — MAP-INTERACTIVE-001 (+1.0)</option>
         </optgroup>
         <optgroup label="Forms / Editor / Streaming">
-          <option value="0.2">Dynamic form — FORMS-DYNAMIC-001 (+0.2)</option>
-          <option value="0.5">Text Editor (WYSIWYG/Markdown) — EDITOR-TEXT-001 (+0.5)</option>
-          <option value="1.0">Video/Audio Streaming — STREAM-VIDAUD-001 (+1.0)</option>
-          <option value="0.5">File Streaming — STREAM-FILES-001 (+0.5)</option>
+          <option value="0.2|FORMS-DYNAMIC-001">Dynamic form — FORMS-DYNAMIC-001 (+0.2)</option>
+          <option value="0.5|EDITOR-TEXT-001">Text Editor (WYSIWYG/Markdown) — EDITOR-TEXT-001 (+0.5)</option>
+          <option value="1.0|STREAM-VIDAUD-001">Video/Audio Streaming — STREAM-VIDAUD-001 (+1.0)</option>
+          <option value="0.5|STREAM-FILES-001">File Streaming — STREAM-FILES-001 (+0.5)</option>
         </optgroup>
         <optgroup label="Exports">
-          <option value="0.7">Static Template export (PDF/Excel/Word) — EXPORT-BY-TEMP001 (+0.7)</option>
+          <option value="0.7|EXPORT-BY-TEMP001">Static Template export (PDF/Excel/Word) — EXPORT-BY-TEMP001 (+0.7)</option>
         </optgroup>
       </select>
     </div>
     <div class="field">
       <label>Engine Factor</label>
       <select id="eng1" onchange="updateCalc()">
-        <option value="0">Không có engine đặc biệt (+0)</option>
+        <option value="0|">Không có engine đặc biệt (+0)</option>
         <optgroup label="Integration Engine">
-          <option value="0.5">API Aggregator — ENG-INT-001 (+0.5)</option>
+          <option value="0.5|ENG-INT-001">API Aggregator — ENG-INT-001 (+0.5)</option>
         </optgroup>
         <optgroup label="Rule & Decision Engine">
-          <option value="0.5">Score Calculator — ENG-RUL-001 (+0.5)</option>
-          <option value="0.5">Cross-System Rule — ENG-RUL-002 (+0.5)</option>
-          <option value="0.2">Rule Pipeline — ENG-RUL-003 (+0.2)</option>
-          <option value="0.2">Rule Context Passing — ENG-RUL-004 (+0.2)</option>
+          <option value="0.5|ENG-RUL-001">Score Calculator — ENG-RUL-001 (+0.5)</option>
+          <option value="0.5|ENG-RUL-002">Cross-System Rule — ENG-RUL-002 (+0.5)</option>
+          <option value="0.2|ENG-RUL-003">Rule Pipeline — ENG-RUL-003 (+0.2)</option>
+          <option value="0.2|ENG-RUL-004">Rule Context Passing — ENG-RUL-004 (+0.2)</option>
         </optgroup>
         <optgroup label="Workflow & Orchestration">
-          <option value="0.5">Dynamic Router — ENG-WKF-001 (+0.5)</option>
-          <option value="0.2">State Checkpoint — ENG-WKF-002 (+0.2)</option>
-          <option value="0.5">DAG Scheduler — ENG-WKF-003 (+0.5)</option>
-          <option value="0.2">Distributed Tracker — ENG-WKF-004 (+0.2)</option>
-          <option value="0.5">Rollback Executor — ENG-WKF-005 (+0.5)</option>
+          <option value="0.5|ENG-WKF-001">Dynamic Router — ENG-WKF-001 (+0.5)</option>
+          <option value="0.2|ENG-WKF-002">State Checkpoint — ENG-WKF-002 (+0.2)</option>
+          <option value="0.5|ENG-WKF-003">DAG Scheduler — ENG-WKF-003 (+0.5)</option>
+          <option value="0.2|ENG-WKF-004">Distributed Tracker — ENG-WKF-004 (+0.2)</option>
+          <option value="0.5|ENG-WKF-005">Rollback Executor — ENG-WKF-005 (+0.5)</option>
         </optgroup>
         <optgroup label="Data & Streaming Engine">
-          <option value="0.2">Event Aggregator — ENG-STR-001 (+0.2)</option>
-          <option value="0.2">Pattern Matcher — ENG-STR-002 (+0.2)</option>
+          <option value="0.2|ENG-STR-001">Event Aggregator — ENG-STR-001 (+0.2)</option>
+          <option value="0.2|ENG-STR-002">Pattern Matcher — ENG-STR-002 (+0.2)</option>
         </optgroup>
         <optgroup label="Data & AI Engine">
-          <option value="0.2">Feature Profiler — ENG-DAI-001 (+0.2)</option>
-          <option value="0.2">Outlier Detector — ENG-DAI-002 (+0.2)</option>
-          <option value="0.2">Fuzzy Search — ENG-DAI-003 (+0.2)</option>
-          <option value="0.2">Record Merger — ENG-DAI-004 (+0.2)</option>
-          <option value="0.2">Context Profiler — ENG-DAI-005 (+0.2)</option>
-          <option value="0.2">Item Ranker — ENG-DAI-006 (+0.2)</option>
-          <option value="0.2">Vector Search — ENG-DAI-007 (+0.2)</option>
-          <option value="0.2">Prompt Builder — ENG-DAI-008 (+0.2)</option>
-          <option value="0.2">LLM Parser — ENG-DAI-009 (+0.2)</option>
-          <option value="0.5">Faceted Search — ENG-DAI-010 (+0.5)</option>
+          <option value="0.2|ENG-DAI-001">Feature Profiler — ENG-DAI-001 (+0.2)</option>
+          <option value="0.2|ENG-DAI-002">Outlier Detector — ENG-DAI-002 (+0.2)</option>
+          <option value="0.2|ENG-DAI-003">Fuzzy Search — ENG-DAI-003 (+0.2)</option>
+          <option value="0.2|ENG-DAI-004">Record Merger — ENG-DAI-004 (+0.2)</option>
+          <option value="0.2|ENG-DAI-005">Context Profiler — ENG-DAI-005 (+0.2)</option>
+          <option value="0.2|ENG-DAI-006">Item Ranker — ENG-DAI-006 (+0.2)</option>
+          <option value="0.2|ENG-DAI-007">Vector Search — ENG-DAI-007 (+0.2)</option>
+          <option value="0.2|ENG-DAI-008">Prompt Builder — ENG-DAI-008 (+0.2)</option>
+          <option value="0.2|ENG-DAI-009">LLM Parser — ENG-DAI-009 (+0.2)</option>
+          <option value="0.5|ENG-DAI-010">Faceted Search — ENG-DAI-010 (+0.5)</option>
         </optgroup>
         <optgroup label="Presentation & Output">
-          <option value="0.5">Document Generator — ENG-OUT-001 (+0.5)</option>
-          <option value="0.2">Client Profiler — ENG-OUT-002 (+0.2)</option>
-          <option value="0.2">UI Schema Builder — ENG-OUT-003 (+0.2)</option>
+          <option value="0.5|ENG-OUT-001">Document Generator — ENG-OUT-001 (+0.5)</option>
+          <option value="0.2|ENG-OUT-002">Client Profiler — ENG-OUT-002 (+0.2)</option>
+          <option value="0.2|ENG-OUT-003">UI Schema Builder — ENG-OUT-003 (+0.2)</option>
         </optgroup>
         <optgroup label="Resilience & Security">
-          <option value="0.2">DLQ Handler — ENG-SEC-001 (+0.2)</option>
-          <option value="0.2">Policy Evaluator — ENG-SEC-002 (+0.2)</option>
+          <option value="0.2|ENG-SEC-001">DLQ Handler — ENG-SEC-001 (+0.2)</option>
+          <option value="0.2|ENG-SEC-002">Policy Evaluator — ENG-SEC-002 (+0.2)</option>
         </optgroup>
       </select>
     </div>
@@ -287,21 +317,52 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
     <div class="formula-box" id="formula-text"></div>
     <div class="metric-grid" style="margin-top:12px">
-      <div class="metric"><div class="metric-val" id="m-hours">—</div><div class="metric-lbl">Giờ công (× 4.85h)</div></div>
-      <div class="metric"><div class="metric-val" id="m-md">—</div><div class="metric-lbl">Man-day (8h/ngày)</div></div>
-      <div class="metric"><div class="metric-val" id="m-base">—</div><div class="metric-lbl">Base FP (chưa factor)</div></div>
+      <div class="metric"><div class="metric-val" id="m-hours">—</div><div class="metric-lbl">Effort Hours (× 4.85h)</div></div>
+      <div class="metric"><div class="metric-val" id="m-md">—</div><div class="metric-lbl">Man-day (8h/day)</div></div>
+      <div class="metric"><div class="metric-val" id="m-base">—</div><div class="metric-lbl">Base FP</div></div>
     </div>
   </div>
   <button id="btn-save-calc" class="btn btn-full btn-save-always" style="margin-top:12px" onclick="saveToHistory()" disabled>+ Lưu vào lịch sử</button>
 </div>
 
-<!-- ===== TAB: TASK ===== -->
+<!-- TAB: TASK -->
 <div id="panel-task" class="panel">
   <div class="card">
     <div class="card-title">Quy đổi Task / Research / Meeting → FP</div>
     <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Áp dụng cho: Task, Management, BrSE, Research, Testing, Self-Study... Nguyên tắc: <b>làm tròn lên</b>.</p>
-    <div class="field"><label>Mô tả task</label><input type="text" id="task-desc" placeholder="VD: Research và viết tài liệu QA training"></div>
-    <div class="field"><label>Thời gian thực tế (giờ)</label><input type="number" id="task-hours" min="0" max="8" step="0.5" placeholder="VD: 3" oninput="calcTask()"></div>
+    <div class="field">
+      <label>Mô tả task <span class="req">*</span></label>
+      <input type="text" id="task-desc" placeholder="VD: Research và viết tài liệu QA training" oninput="checkTaskSave()">
+      <div class="field-error" id="task-desc-err">Vui lòng nhập mô tả task.</div>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label>Dev <span class="req">*</span></label>
+        <select id="task-dev" onchange="checkTaskSave()">
+          <option value="">— chọn dev —</option>
+          <option>DINH BNH DUONG</option>
+          <option>DO TOAN THANG</option>
+          <option>DUONG PHUONG THAO</option>
+          <option>NGUYEN THI MINH THUY</option>
+          <option>PHAM VAN LINH</option>
+          <option>TRAN ANH VAN</option>
+        </select>
+        <div class="field-error" id="task-dev-err">Vui lòng chọn dev.</div>
+      </div>
+      <div class="field">
+        <label>Sprint</label>
+        <input type="number" id="task-sprint" min="1" placeholder="VD: 23">
+      </div>
+      <div class="field">
+        <label>Jira Link</label>
+        <input type="url" id="task-jira" placeholder="https://jira.../browse/PROJ-123">
+      </div>
+    </div>
+    <div class="field">
+      <label>Thời gian thực tế (giờ) <span class="req">*</span></label>
+      <input type="number" id="task-hours" min="0" max="8" step="0.5" placeholder="VD: 3" oninput="calcTask()">
+      <div class="field-error" id="task-hours-err">Vui lòng nhập thời gian.</div>
+    </div>
     <div id="task-result" style="display:none;margin-top:16px">
       <div class="result-hero">
         <div>
@@ -333,23 +394,23 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   </div>
 </div>
 
-<!-- ===== TAB: HISTORY ===== -->
+<!-- TAB: HISTORY -->
 <div id="panel-history" class="panel">
   <div id="totals-area" style="display:none">
     <div class="totals-bar">
-      <div><div class="t-label">Tổng FP</div><div class="t-val" id="total-sum">0</div></div>
-      <div style="text-align:center"><div class="t-label">Tổng giờ công</div><div class="t-val" id="total-hours">0h</div></div>
-      <div style="text-align:right"><div class="t-label">Tổng Man-day</div><div class="t-val" id="total-md">0</div></div>
+      <div><div class="t-label">Total FP</div><div class="t-val" id="total-sum">0</div></div>
+      <div style="text-align:center"><div class="t-label">Effort Hours</div><div class="t-val" id="total-hours">0h</div></div>
+      <div style="text-align:right"><div class="t-label">Man-day</div><div class="t-val" id="total-md">0</div></div>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:16px">
-      <button class="btn btn-sm" onclick="exportHistory()">⬇ Export CSV</button>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-sm btn-primary" onclick="exportExcel()">⬇ Export Excel (.xlsx)</button>
       <button class="btn btn-sm" style="color:var(--red);border-color:var(--red)" onclick="clearHistory()">Xóa tất cả</button>
     </div>
   </div>
   <div id="history-list"><div class="empty"><div class="empty-icon">📋</div><p>Chưa có kết quả nào được lưu.<br>Tính FP xong, bấm "Lưu vào lịch sử".</p></div></div>
 </div>
 
-<!-- ===== TAB: PROCESS ===== -->
+<!-- TAB: PROCESS -->
 <div id="panel-process" class="panel">
   <div class="card">
     <div class="card-title">Quy trình tính Function Point — 5 bước</div>
@@ -366,7 +427,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </div>
     <div class="note">Công thức: <b>Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</b></div>
   </div>
-
   <div class="card">
     <div class="card-title">Bước 1 — Measurement Type</div>
     <table>
@@ -379,7 +439,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </table>
     <div class="note">Thông thường dùng <b>Development Project</b> cho các story/feature mới trong sprint.</div>
   </div>
-
   <div class="card">
     <div class="card-title">Bước 2 — Application Boundary</div>
     <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Ranh giới logic giữa hệ thống đang đo và bên ngoài. Phải thống nhất với khách hàng trước khi tính FP.</p>
@@ -414,64 +473,27 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </table>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">Bước 3 & 4 — Unit Process Criteria</div>
     <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Một hành động phải thỏa mãn <b>đủ 3 tiêu chí</b> thì mới được tính là 1 unit process:</p>
     <div class="criteria-list">
-      <div class="criteria-item">
-        <div class="criteria-num">1</div>
-        <div class="criteria-body">
-          <h4>Meaningful to the user</h4>
-          <p>Feature phải xuất phát từ yêu cầu người dùng thực sự, không phải xử lý kỹ thuật nội bộ.</p>
-          <p class="ex">VD: "Đăng ký nhân viên mới" là meaningful. "Tạo UUID cho record" thì không.</p>
-        </div>
-      </div>
-      <div class="criteria-item">
-        <div class="criteria-num">2</div>
-        <div class="criteria-body">
-          <h4>Complete transaction</h4>
-          <p>Phải bao gồm tất cả thông tin cần thiết để hoàn thành giao dịch. Không thể tách rời.</p>
-          <p class="ex">VD: Đăng ký nhân viên phải bao gồm cả lương và người phụ thuộc (nếu có). Thiếu → không complete.</p>
-        </div>
-      </div>
-      <div class="criteria-item">
-        <div class="criteria-num">3</div>
-        <div class="criteria-body">
-          <h4>Maintain business consistency</h4>
-          <p>Sau khi thực hiện, dữ liệu phải ở trạng thái nhất quán về mặt nghiệp vụ.</p>
-          <p class="ex">VD: Nhập thiếu địa chỉ và lương khi đăng ký nhân viên → business inconsistency → không tính là 1 unit process.</p>
-        </div>
-      </div>
+      <div class="criteria-item"><div class="criteria-num">1</div><div class="criteria-body"><h4>Meaningful to the user</h4><p>Feature phải xuất phát từ yêu cầu người dùng thực sự, không phải xử lý kỹ thuật nội bộ.</p><p class="ex">VD: "Đăng ký nhân viên mới" là meaningful. "Tạo UUID cho record" thì không.</p></div></div>
+      <div class="criteria-item"><div class="criteria-num">2</div><div class="criteria-body"><h4>Complete transaction</h4><p>Phải bao gồm tất cả thông tin cần thiết để hoàn thành giao dịch. Không thể tách rời.</p><p class="ex">VD: Đăng ký nhân viên phải bao gồm cả lương và người phụ thuộc (nếu có). Thiếu → không complete.</p></div></div>
+      <div class="criteria-item"><div class="criteria-num">3</div><div class="criteria-body"><h4>Maintain business consistency</h4><p>Sau khi thực hiện, dữ liệu phải ở trạng thái nhất quán về mặt nghiệp vụ.</p><p class="ex">VD: Nhập thiếu địa chỉ và lương khi đăng ký nhân viên → business inconsistency → không tính là 1 unit process.</p></div></div>
     </div>
     <div class="note">⚠ Attachment đơn lẻ, code data (lookup table), temporary files → KHÔNG đủ tiêu chí → KHÔNG tính FP.</div>
   </div>
-
   <div class="card">
     <div class="card-title">Bước 5 — Nhập FP vào hệ thống (AS IS vs TO BE)</div>
     <div class="asis-tobe">
-      <div class="asis-box asis">
-        <h4>AS IS — Story cũ</h4>
-        <ul>
-          <li><b>PLAN:</b> Nhập tổng effort MD (Analysis → Design → Dev)</li>
-          <li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li>
-        </ul>
-        <span class="condition">Điều kiện: Plan ≤ 5 MD / story</span>
-      </div>
-      <div class="asis-box tobe">
-        <h4>TO BE — Story mới</h4>
-        <ul>
-          <li><b>PLAN:</b> Nhập Function Points (FP) thay vì MD</li>
-          <li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li>
-        </ul>
-        <span class="condition" style="background:rgba(74,63,212,0.1);color:var(--accent)">Đơn vị: FP</span>
-      </div>
+      <div class="asis-box asis"><h4>AS IS — Story cũ</h4><ul><li><b>PLAN:</b> Nhập tổng effort MD (Analysis → Design → Dev)</li><li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li></ul><span class="condition">Điều kiện: Plan ≤ 5 MD / story</span></div>
+      <div class="asis-box tobe"><h4>TO BE — Story mới</h4><ul><li><b>PLAN:</b> Nhập Function Points (FP) thay vì MD</li><li><b>ACTUAL:</b> Nhập effort thực tế từng giai đoạn</li></ul><span class="condition" style="background:rgba(74,63,212,0.1);color:var(--accent)">Đơn vị: FP</span></div>
     </div>
     <div class="note">Ref: <b>[GSU] Solution CoE FP Calculation V1.1.xlsm</b> &nbsp;·&nbsp; Checklist: <b>KRSTD-CK-07 — WIRE-Wiki</b></div>
   </div>
 </div>
 
-<!-- ===== TAB: REF ===== -->
+<!-- TAB: REF -->
 <div id="panel-ref" class="panel">
   <div class="card">
     <div class="card-title">Base FP theo loại</div>
@@ -487,7 +509,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
     </table>
     <div class="note">Công thức: <b>Total FP = Base FP × (1 + UI Factor weight + Engine Factor weight)</b></div>
   </div>
-
   <div class="card">
     <div class="card-title">UI Factor — danh sách đầy đủ (32 patterns)</div>
     <table>
@@ -528,7 +549,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </tbody>
     </table>
   </div>
-
   <div class="card">
     <div class="card-title">Engine Factor — danh sách đầy đủ (27 patterns)</div>
     <table>
@@ -564,7 +584,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </tbody>
     </table>
   </div>
-
   <div class="card">
     <div class="card-title">Complexity Weight — Orthodox Method</div>
     <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Dùng khi cần tính chính xác hơn average. Xác định Low/Usually/High theo RET/FTR và DET.</p>
@@ -578,10 +597,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <tr><td>6+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
         </tbody>
       </table>
-      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px">
-        <span><b>ILF:</b> Low=7, Usually=10, High=15</span>
-        <span><b>EIF:</b> Low=5, Usually=7, High=10</span>
-      </div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px"><span><b>ILF:</b> Low=7, Usually=10, High=15</span><span><b>EIF:</b> Low=5, Usually=7, High=10</span></div>
     </div>
     <div class="ref-section">
       <h3>EI — theo FTR × DET</h3>
@@ -605,15 +621,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
           <tr><td>4+</td><td class="usually">Usually</td><td class="high">High</td><td class="high">High</td></tr>
         </tbody>
       </table>
-      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px">
-        <span><b>EO weights:</b> Low=4, Usually=5, High=7</span>
-        <span><b>EQ weights:</b> Low=3, Usually=4, High=6</span>
-      </div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px"><span><b>EO weights:</b> Low=4, Usually=5, High=7</span><span><b>EQ weights:</b> Low=3, Usually=4, High=6</span></div>
     </div>
   </div>
 </div>
 
-<!-- ===== TAB: TIPS ===== -->
+<!-- TAB: TIPS -->
 <div id="panel-tips" class="panel">
   <div class="card">
     <div class="card-title">Cách phân loại nhanh</div>
@@ -628,7 +641,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </tbody>
     </table>
   </div>
-
   <div class="card">
     <div class="card-title">Các trường hợp hay nhầm</div>
     <table>
@@ -648,7 +660,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </tbody>
     </table>
   </div>
-
   <div class="card">
     <div class="card-title">Ví dụ thực tế từ slide</div>
     <table>
@@ -667,7 +678,6 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       </tbody>
     </table>
   </div>
-
   <div class="card">
     <div class="card-title">Verify FP — checklist 3 bước</div>
     <div style="font-size:13px;color:var(--text2);line-height:1.8">
@@ -689,20 +699,27 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <p><b style="color:var(--text)">③ Cross-check</b> Data vs Transaction — mỗi ILF phải có ít nhất 1 EI tương ứng để maintain nó.</p>
     </div>
   </div>
-
   <div class="card">
     <div class="card-title">⚠ Lưu ý quan trọng</div>
-    <div class="tip-box">
-      Weight adjustment (UI Factor / Engine Factor) phải có lý do rõ ràng, phải được <b>QA/PM/TL review</b> và subject to <b>post-audit by QS</b>. Hạn chế dùng tùy tiện. Nếu UI/Engine bình thường → để weight = 0.
-    </div>
+    <div class="tip-box">Weight adjustment (UI Factor / Engine Factor) phải có lý do rõ ràng, phải được <b>QA/PM/TL review</b> và subject to <b>post-audit by QS</b>. Hạn chế dùng tùy tiện. Nếu UI/Engine bình thường → để weight = 0.</div>
   </div>
 </div>
 
 </div>
 
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const BASE={EI:4,EO:5.2,EQ:3.9,ILF:7.5,EIF:5.4};
-let history=JSON.parse(localStorage.getItem('fp_history')||'[]');
+const BASE_NAMES={EI:'External Input',EO:'External Output',EQ:'External Query',ILF:'Internal Logic File',EIF:'External Interface File'};
+let history=JSON.parse(localStorage.getItem('fp_history_v2')||'[]');
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2200);
+}
 
 function switchTab(name){
   const panels=['calc','task','history','process','ref','tips'];
@@ -712,27 +729,57 @@ function switchTab(name){
   if(name==='history')renderHistory();
 }
 
+function parseSelect(id){
+  const val=document.getElementById(id).value;
+  const parts=val.split('|');
+  return {weight:parseFloat(parts[0])||0, id:parts[1]||''};
+}
+function getSelectLabel(id){
+  const el=document.getElementById(id);
+  const opt=el.options[el.selectedIndex];
+  return opt?opt.text:'';
+}
+
 function checkCalcSave(){
   const desc=document.getElementById('desc').value.trim();
   const type=document.getElementById('fptype').value;
-  const btn=document.getElementById('btn-save-calc');
-  btn.disabled=!(desc&&type);
+  const dev=document.getElementById('dev').value;
+  document.getElementById('btn-save-calc').disabled=!(desc&&type&&dev);
+}
+
+function validateCalc(){
+  let ok=true;
+  const desc=document.getElementById('desc').value.trim();
+  const type=document.getElementById('fptype').value;
+  const dev=document.getElementById('dev').value;
+  const setErr=(id,errId,show)=>{
+    document.getElementById(id).classList.toggle('error',show);
+    document.getElementById(errId).classList.toggle('show',show);
+  };
+  setErr('desc','desc-err',!desc); if(!desc)ok=false;
+  setErr('fptype','fptype-err',!type); if(!type)ok=false;
+  setErr('dev','dev-err',!dev); if(!dev)ok=false;
+  return ok;
 }
 
 function updateCalc(){
   const type=document.getElementById('fptype').value;
-  const ui=parseFloat(document.getElementById('ui1').value)||0;
-  const eng=parseFloat(document.getElementById('eng1').value)||0;
-  if(!type){document.getElementById('basefp').value='';document.getElementById('result-area').style.display='none';checkCalcSave();return;}
+  const ui=parseSelect('ui1');
+  const eng=parseSelect('eng1');
+  if(!type){
+    document.getElementById('basefp').value='';
+    document.getElementById('result-area').style.display='none';
+    checkCalcSave();return;
+  }
   const base=BASE[type];
   document.getElementById('basefp').value=base+' FP';
-  const total=base*(1+ui+eng);
+  const total=base*(1+ui.weight+eng.weight);
   document.getElementById('result-area').style.display='block';
   document.getElementById('total-fp').textContent=total.toFixed(2)+' FP';
-  document.getElementById('fp-badge').innerHTML=`<span class="badge badge-${type}">${type}</span>`;
-  const uiStr=ui>0?` + ${ui.toFixed(2)} UI`:'';
-  const engStr=eng>0?` + ${eng.toFixed(2)} Eng`:'';
-  document.getElementById('formula-text').textContent=`${base} × (1${uiStr}${engStr}) = ${total.toFixed(2)} FP`;
+  document.getElementById('fp-badge').innerHTML='<span class="badge badge-'+type+'">'+type+'</span>';
+  const uiStr=ui.weight>0?' + '+ui.weight+' UI':'';
+  const engStr=eng.weight>0?' + '+eng.weight+' Eng':'';
+  document.getElementById('formula-text').textContent=base+' \u00d7 (1'+uiStr+engStr+') = '+total.toFixed(2)+' FP';
   document.getElementById('m-hours').textContent=(total*4.85).toFixed(1)+'h';
   document.getElementById('m-md').textContent=(total*4.85/8).toFixed(2)+' MD';
   document.getElementById('m-base').textContent=base+' FP';
@@ -740,23 +787,44 @@ function updateCalc(){
 }
 
 function saveToHistory(){
+  if(!validateCalc())return;
   const type=document.getElementById('fptype').value;
-  if(!type){alert('Chọn loại FP trước!');return;}
-  const ui=parseFloat(document.getElementById('ui1').value)||0;
-  const eng=parseFloat(document.getElementById('eng1').value)||0;
+  const ui=parseSelect('ui1');
+  const eng=parseSelect('eng1');
   const base=BASE[type];
-  const total=+(base*(1+ui+eng)).toFixed(2);
-  const desc=document.getElementById('desc').value.trim()||'(không có mô tả)';
-  history.unshift({id:Date.now(),desc,type,base,ui,eng,total,hours:+(total*4.85).toFixed(1),md:+(total*4.85/8).toFixed(2),date:new Date().toLocaleDateString('vi-VN')});
-  localStorage.setItem('fp_history',JSON.stringify(history));
-  alert('Đã lưu! Xem trong tab Lịch sử.');
+  const total=+(base*(1+ui.weight+eng.weight)).toFixed(2);
+  const desc=document.getElementById('desc').value.trim();
+  const dev=document.getElementById('dev').value;
+  const sprint=document.getElementById('sprint').value.trim();
+  const jira=document.getElementById('jira').value.trim();
+  const uiLabel=getSelectLabel('ui1');
+  const engLabel=getSelectLabel('eng1');
+  const d=new Date();
+  const dateStr=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  history.unshift({
+    id:Date.now(),desc,dev,sprint,jira,
+    type,typeName:BASE_NAMES[type],base,
+    ui:ui.weight,uiId:ui.id,uiName:ui.id?uiLabel:'—',
+    eng:eng.weight,engId:eng.id,engName:eng.id?engLabel:'—',
+    total,
+    effortHours:+(total*4.85).toFixed(1),
+    md:+(total*4.85/8).toFixed(2),
+    date:dateStr
+  });
+  localStorage.setItem('fp_history_v2',JSON.stringify(history));
+  showToast('✓ Đã lưu vào lịch sử');
   document.getElementById('desc').value='';
+  document.getElementById('dev').value='';
+  document.getElementById('sprint').value='';
+  document.getElementById('jira').value='';
   document.getElementById('fptype').value='';
-  document.getElementById('ui1').value='0';
-  document.getElementById('eng1').value='0';
+  document.getElementById('ui1').selectedIndex=0;
+  document.getElementById('eng1').selectedIndex=0;
   document.getElementById('result-area').style.display='none';
   document.getElementById('basefp').value='';
   document.getElementById('btn-save-calc').disabled=true;
+  ['desc','fptype','dev'].forEach(id=>document.getElementById(id).classList.remove('error'));
+  ['desc-err','fptype-err','dev-err'].forEach(id=>document.getElementById(id).classList.remove('show'));
 }
 
 function renderHistory(){
@@ -773,12 +841,16 @@ function renderHistory(){
   el.innerHTML=history.map(h=>`
     <div class="history-item">
       <div style="flex:1;min-width:0">
-        <div class="history-desc">${h.desc}</div>
-        <div class="history-meta"><span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span>&nbsp;Base ${h.base} FP&nbsp;·&nbsp;${h.date}</div>
+        <div class="history-desc" title="${h.desc}">${h.desc}</div>
+        <div class="history-meta">
+          <span class="badge badge-${h.type}" style="font-size:11px">${h.type}</span>
+          &nbsp;${h.dev||''}${h.sprint?' · Sprint '+h.sprint:''}${h.jira?' · <a href="'+h.jira+'" target="_blank" style="color:var(--accent)">Jira</a>':''}
+          &nbsp;·&nbsp;${h.date}
+        </div>
       </div>
       <div style="text-align:right;flex-shrink:0;margin-left:12px">
         <div class="history-fp">${h.total} FP</div>
-        <div style="font-size:11px;color:var(--text3)">${h.hours}h / ${h.md} MD</div>
+        <div style="font-size:11px;color:var(--text3)">${h.effortHours}h / ${h.md} MD</div>
       </div>
       <button onclick="deleteHistoryItem(${h.id})" title="Xóa" style="margin-left:10px;flex-shrink:0;background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:4px 6px;border-radius:6px;line-height:1;transition:color 0.15s,background 0.15s" onmouseover="this.style.color='var(--red)';this.style.background='var(--red-bg)'" onmouseout="this.style.color='var(--text3)';this.style.background='none'">✕</button>
     </div>`).join('');
@@ -786,32 +858,111 @@ function renderHistory(){
 
 function clearHistory(){
   if(!confirm('Xóa toàn bộ lịch sử?'))return;
-  history=[];localStorage.removeItem('fp_history');renderHistory();
+  history=[];localStorage.removeItem('fp_history_v2');renderHistory();
 }
 
 function deleteHistoryItem(id){
   history=history.filter(h=>h.id!==id);
-  localStorage.setItem('fp_history',JSON.stringify(history));
+  localStorage.setItem('fp_history_v2',JSON.stringify(history));
   renderHistory();
 }
 
-function exportHistory(){
-  const rows=[['Mô tả','Loại','Base FP','UI Weight','Engine Weight','Total FP','Giờ công','Man-day','Ngày']];
-  history.forEach(h=>rows.push([`"${h.desc}"`,h.type,h.base,h.ui,h.eng,h.total,h.hours,h.md,h.date]));
-  const csv=rows.map(r=>r.join(',')).join('\n');
+function exportExcel(){
+  if(!history.length){showToast('Không có dữ liệu để export.');return;}
+
+  const headers=[
+    'Task','Jira Link','Sprint','Dev',
+    'Type','Base FP','Base FP Name',
+    'UI Weight','UI Weight Name',
+    'Engine Weight','Engine Weight Name',
+    'Total FP','Effort Hours','Man-day','Date'
+  ];
+
+  const s=v=>(v===undefined||v===null)?'':String(v);
+  const n=v=>(v===undefined||v===null||isNaN(v))?0:Number(v);
+  const rows=history.map(h=>[
+    s(h.desc),
+    s(h.jira),
+    s(h.sprint),
+    s(h.dev),
+    s(h.type),
+    n(h.base),
+    s(h.typeName||BASE_NAMES[h.type]||h.type),
+    n(h.ui),
+    s(h.uiName),
+    n(h.eng),
+    s(h.engName),
+    n(h.total),
+    n(h.effortHours),
+    n(h.md),
+    s(h.date)
+  ]);
+
+  const ws=XLSX.utils.aoa_to_sheet([headers,...rows]);
+
+  ws['!cols']=[
+    {wch:40},{wch:35},{wch:8},{wch:22},
+    {wch:6},{wch:9},{wch:24},
+    {wch:11},{wch:35},
+    {wch:14},{wch:35},
+    {wch:10},{wch:13},{wch:10},{wch:12}
+  ];
+
+  ws['!autofilter']={ref:'A1:O1'};
+  ws['!views']=[{state:'frozen',xSplit:0,ySplit:1}];
+
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,'FP Report',ws);
+
+  const d=new Date();
+  const today=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  const totalFP=history.reduce((s,h)=>s+h.total,0);
+
+  const summaryData=[
+    ['FP Report Summary',''],
+    ['Export Date',today],
+    ['Total Records',history.length],
+    ['Total FP',+totalFP.toFixed(2)],
+    ['Total Effort Hours',+(totalFP*4.85).toFixed(1)],
+    ['Total Man-day',+(totalFP*4.85/8).toFixed(2)],
+    ['',''],
+    ['By Type','FP']
+  ];
+  const byType={};
+  history.forEach(h=>{byType[h.type]=(byType[h.type]||0)+h.total;});
+  Object.entries(byType).forEach(([t,fp])=>summaryData.push([t,+fp.toFixed(2)]));
+  summaryData.push(['',''],['By Dev','FP']);
+  const byDev={};
+  history.forEach(h=>{if(h.dev)byDev[h.dev]=(byDev[h.dev]||0)+h.total;});
+  Object.entries(byDev).forEach(([dev,fp])=>summaryData.push([dev,+fp.toFixed(2)]));
+
+  const ws2=XLSX.utils.aoa_to_sheet(summaryData);
+  ws2['!cols']=[{wch:28},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,'Summary',ws2);
+
+  const fname='FP_Report_'+d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear()+'.xlsx';
+  const wbout=XLSX.write(wb,{bookType:'xlsx',type:'array'});
+  const blob=new Blob([wbout],{type:'application/octet-stream'});
+  const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
-  a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv);
-  a.download='FP_History.csv';a.click();
+  a.href=url;
+  a.download=fname;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('✓ Exported successfully!');
 }
+
+const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,fp:0.82},{max:6,md:0.75,fp:1.24},{max:8,md:1.00,fp:1.65}];
 
 function checkTaskSave(){
   const desc=document.getElementById('task-desc').value.trim();
   const hours=document.getElementById('task-hours').value;
-  const btn=document.getElementById('btn-save-task');
-  btn.disabled=!(desc&&hours!=='');
+  const dev=document.getElementById('task-dev').value;
+  document.getElementById('btn-save-task').disabled=!(desc&&hours!==''&&dev);
 }
 
-const TASK_MAP=[{max:1,md:0.13,fp:0.21},{max:2,md:0.25,fp:0.41},{max:4,md:0.50,fp:0.82},{max:6,md:0.75,fp:1.24},{max:8,md:1.00,fp:1.65}];
 function calcTask(){
   const h=parseFloat(document.getElementById('task-hours').value);
   if(isNaN(h)||h<0){document.getElementById('task-result').style.display='none';checkTaskSave();return;}
@@ -822,50 +973,61 @@ function calcTask(){
   checkTaskSave();
 }
 
+function validateTask(){
+  let ok=true;
+  const desc=document.getElementById('task-desc').value.trim();
+  const dev=document.getElementById('task-dev').value;
+  const hours=document.getElementById('task-hours').value;
+  const setErr=(id,errId,show)=>{
+    document.getElementById(id).classList.toggle('error',show);
+    document.getElementById(errId).classList.toggle('show',show);
+  };
+  setErr('task-desc','task-desc-err',!desc); if(!desc)ok=false;
+  setErr('task-dev','task-dev-err',!dev); if(!dev)ok=false;
+  setErr('task-hours','task-hours-err',hours===''); if(hours==='')ok=false;
+  return ok;
+}
+
 function saveTaskToHistory(){
+  if(!validateTask())return;
   const h=parseFloat(document.getElementById('task-hours').value);
-  if(isNaN(h)||h<0){alert('Nhập thời gian task trước!');return;}
   const row=TASK_MAP.find(r=>h<=r.max)||TASK_MAP[TASK_MAP.length-1];
-  const desc=document.getElementById('task-desc').value.trim()||'(không có mô tả)';
-  const total=row.fp;
-  const md=row.md;
-  history.unshift({id:Date.now(),desc,type:'TASK',base:total,ui:0,eng:0,total,hours:+(total*4.85).toFixed(1),md,date:new Date().toLocaleDateString('vi-VN')});
-  localStorage.setItem('fp_history',JSON.stringify(history));
-  alert('Đã lưu! Xem trong tab Lịch sử.');
+  const desc=document.getElementById('task-desc').value.trim();
+  const dev=document.getElementById('task-dev').value;
+  const sprint=document.getElementById('task-sprint').value.trim();
+  const jira=document.getElementById('task-jira').value.trim();
+  const d=new Date();
+  const dateStr=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear();
+  history.unshift({
+    id:Date.now(),desc,dev,sprint,jira,
+    type:'TASK',typeName:'Task / Research / Meeting',base:row.fp,
+    ui:0,uiId:'',uiName:'—',
+    eng:0,engId:'',engName:'—',
+    total:row.fp,
+    effortHours:+(row.fp*4.85).toFixed(1),
+    md:row.md,
+    date:dateStr
+  });
+  localStorage.setItem('fp_history_v2',JSON.stringify(history));
+  showToast('✓ Đã lưu vào lịch sử');
   document.getElementById('task-desc').value='';
+  document.getElementById('task-dev').value='';
+  document.getElementById('task-sprint').value='';
+  document.getElementById('task-jira').value='';
   document.getElementById('task-hours').value='';
   document.getElementById('task-result').style.display='none';
   document.getElementById('btn-save-task').disabled=true;
+  ['task-desc','task-dev','task-hours'].forEach(id=>document.getElementById(id).classList.remove('error'));
+  ['task-desc-err','task-dev-err','task-hours-err'].forEach(id=>document.getElementById(id).classList.remove('show'));
 }
 
-const UI_LIST=[
-  {id:'LAYOUT-BLOCK-001',w:0.2},{id:'LAYOUT-MASTER-001',w:0.4},{id:'LAYOUT-TAB-001',w:0.23},
-  {id:'TABLE-EDITABLE-001',w:0.5},{id:'TABLE-INFSCROLL-001',w:0.3},{id:'TABLE-PINNING-001',w:0.45},
-  {id:'TABLE-DRAGDROP-001',w:0.6},{id:'TABLE-TREE-001',w:0.45},
-  {id:'TREE-TREE-001',w:0.7},{id:'TREE-DRAGDROP-001',w:0.5},{id:'TREE-LAZEXPAND-001',w:0.3},{id:'TREE-MULTI-001',w:0.5},
-  {id:'DIALOG-POPUP-001',w:0.15},{id:'DIALOG-PANEL-001',w:0.2},
-  {id:'CHART-INTER-001',w:0.3},{id:'CHART-REALTIME-001',w:0.3},
-  {id:'DRAGDROP-REORDER-001',w:0.4},{id:'DRAGDROP-BOARD-001',w:0.4},{id:'DRAGDROP-TREE-001',w:0.35},{id:'DRAGDROP-RESIZE-001',w:0.35},
-  {id:'FLOWS-STEP-001',w:0.25},{id:'FLOWS-BASED-001',w:1.0},
-  {id:'CALENDAR-STATIC-001',w:0.5},{id:'CALENDAR-INTERACTIVE-001',w:0.5},{id:'CALENDAR-GANTT-001',w:0.38},
-  {id:'MAP-STATIC-001',w:0.5},{id:'MAP-INTERACTIVE-001',w:1.0},
-  {id:'FORMS-DYNAMIC-001',w:0.2},{id:'EDITOR-TEXT-001',w:0.5},
-  {id:'STREAM-VIDAUD-001',w:1.0},{id:'STREAM-FILES-001',w:0.5},
-  {id:'EXPORT-BY-TEMP001',w:0.7}
-];
-const ENG_LIST=[
-  {id:'ENG-INT-001',w:0.5},
-  {id:'ENG-RUL-001',w:0.5},{id:'ENG-RUL-002',w:0.5},{id:'ENG-RUL-003',w:0.2},{id:'ENG-RUL-004',w:0.2},
-  {id:'ENG-WKF-001',w:0.5},{id:'ENG-WKF-002',w:0.2},{id:'ENG-WKF-003',w:0.5},{id:'ENG-WKF-004',w:0.2},{id:'ENG-WKF-005',w:0.5},
-  {id:'ENG-STR-001',w:0.2},{id:'ENG-STR-002',w:0.2},
-  {id:'ENG-DAI-001',w:0.2},{id:'ENG-DAI-002',w:0.2},{id:'ENG-DAI-003',w:0.2},{id:'ENG-DAI-004',w:0.2},
-  {id:'ENG-DAI-005',w:0.2},{id:'ENG-DAI-006',w:0.2},{id:'ENG-DAI-007',w:0.2},{id:'ENG-DAI-008',w:0.2},
-  {id:'ENG-DAI-009',w:0.2},{id:'ENG-DAI-010',w:0.5},
-  {id:'ENG-OUT-001',w:0.5},{id:'ENG-OUT-002',w:0.2},{id:'ENG-OUT-003',w:0.2},
-  {id:'ENG-SEC-001',w:0.2},{id:'ENG-SEC-002',w:0.2}
-];
-document.getElementById('desc').addEventListener('input',checkCalcSave);
-document.getElementById('task-desc').addEventListener('input',checkTaskSave);
+document.getElementById('desc').addEventListener('input',()=>{
+  checkCalcSave();
+  if(document.getElementById('desc').value.trim()){
+    document.getElementById('desc').classList.remove('error');
+    document.getElementById('desc-err').classList.remove('show');
+  }
+});
 </script>
 </body>
 </html>
